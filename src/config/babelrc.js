@@ -1,43 +1,8 @@
 // @ts-check
 
 const browserslist = require("browserslist")
-const arrify = require("arrify")
-const has = require("lodash.has")
-const fs = require("fs")
-const readPkgUp = require("read-pkg-up")
-const path = require("path")
 
-// @TODO Stop duplicating those utils. Start babel through node instead
-// of the cli
-const { pkg, path: pkgPath } = readPkgUp.sync({
-  cwd: fs.realpathSync(process.cwd()),
-})
-const appDirectory = path.dirname(pkgPath)
-const envIsSet = name => {
-  return (
-    process.env.hasOwnProperty(name) &&
-    process.env[name] &&
-    process.env[name] !== "undefined"
-  )
-}
-const parseEnv = (name, def) => {
-  if (envIsSet(name)) {
-    try {
-      return JSON.parse(process.env[name])
-    } catch (err) {
-      return process.env[name]
-    }
-  }
-  return def
-}
-const hasPkgProp = props => arrify(props).some(prop => has(pkg, prop))
-const hasPkgSubProp = pkgProp => props =>
-  hasPkgProp(arrify(props).map(p => `${pkgProp}.${p}`))
-const hasPeerDep = hasPkgSubProp("peerDependencies")
-const hasDep = hasPkgSubProp("dependencies")
-const hasDevDep = hasPkgSubProp("devDependencies")
-const hasAnyDep = args => [hasDep, hasDevDep, hasPeerDep].some(fn => fn(args))
-const ifAnyDep = (deps, t, f) => (hasAnyDep(arrify(deps)) ? t : f)
+const { parseEnv, appDirectory, ifAnyDep } = require("../utils")
 
 const isTest = (process.env.BABEL_ENV || process.env.NODE_ENV) === "test"
 const isRollup = parseEnv("BUILD_ROLLUP", false)
