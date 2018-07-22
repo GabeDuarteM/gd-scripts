@@ -6,12 +6,14 @@
     "sourceMap": true,
     "strict": true,
     "noUnusedLocals": true,
-    "lib": ["es7"],
+    "lib": ["esnext"],
     "typeRoots": ["../../node_modules/@types", "../@types"],
     "outDir": "../../build",
 
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "allowJs": true,
+    "checkJs": true
   },
   "include": ["../../src/**/*"],
   "exclude": ["../../node_modules/**/*", "../../build/**/*"]
