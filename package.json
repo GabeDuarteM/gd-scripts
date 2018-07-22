@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "build": "ts-node src/scripts/build src --extensions .ts,.tsx,.js,.jsx",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "ci": "yarn type-check && yarn build"
   },
   "dependencies": {
     "@babel/cli": "^7.0.0-beta.54",
