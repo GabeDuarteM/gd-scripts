@@ -15,7 +15,10 @@ const config = useBuiltinConfig
 
 const ignore = args.includes("--ignore")
   ? []
-  : ["--ignore", "**/*.test.js,**/*.test.ts,**/*.test.tsx,**/*.test.jsx,__mocks__,**/@types"]
+  : [
+      "--ignore",
+      "**/*.test.js,**/*.test.ts,**/*.test.tsx,**/*.test.jsx,**/*.d.ts,__mocks__",
+    ]
 
 const copyFiles = args.includes("--no-copy-files") ? [] : ["--copy-files"]
 
@@ -39,7 +42,7 @@ const babelArguments = [
   ...extensions,
   "src",
   sourceMaps,
-  ...args
+  ...args,
 ]
 
 const resultBabel = spawn.sync(
@@ -50,14 +53,19 @@ const resultBabel = spawn.sync(
 
 spawn.sync(
   resolveBin("typescript", { executable: "tsc" }),
-  ['--emitDeclarationOnly'],
+  ["--emitDeclarationOnly"],
   { stdio: "inherit" },
 )
 
+// Exlude ignored files from the build dir
 if (ignore.length > 0) {
-  const buildIgnore = ignore[1].split(',').map(x => `build/${x}`).join(",")
+  const buildIgnore = ignore[1]
+    .split(",")
+    .filter(x => x !== "**/*.d.ts") // Do not exclude type definitions
+    .map(x => `build/${x}`)
+    .join(",")
 
-  rimraf.sync(`{${buildIgnore}}`);
+  rimraf.sync(`{${buildIgnore}}`)
 }
 
 process.exit(resultBabel.status)
