@@ -2,11 +2,13 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
+    "declaration": true,
     "sourceMap": true,
     "strict": true,
     "noUnusedLocals": true,
     "lib": ["es7"],
     "typeRoots": ["../../node_modules/@types", "../@types"],
+    "outDir": "../../build",
 
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true

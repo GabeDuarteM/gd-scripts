@@ -2,7 +2,7 @@ import path from "path"
 import spawn from "cross-spawn"
 import rimraf from "rimraf"
 import { hasPkgProp, fromRoot, resolveBin, hasFile } from "../../utils"
-import paths from "../paths"
+import paths from "../../paths"
 
 const args = process.argv.slice(2)
 const here = (p: string) => path.join(__dirname, p)
@@ -15,31 +15,49 @@ const config = useBuiltinConfig
 
 const ignore = args.includes("--ignore")
   ? []
-  : ["--ignore", "**/*.test.js,__mocks__,@types"]
+  : ["--ignore", "**/*.test.js,**/*.test.ts,**/*.test.tsx,**/*.test.jsx,__mocks__,**/@types"]
 
 const copyFiles = args.includes("--no-copy-files") ? [] : ["--copy-files"]
 
 const useSpecifiedOutDir = args.includes("--out-dir")
 const outDir = useSpecifiedOutDir ? [] : ["--out-dir", paths.output]
 
-const ignoreTypeDef = ["--ignore", "**/@types"]
+const extensions = ["--extensions", ".ts,.tsx,.js,.jsx"]
+
+const sourceMaps = "-s"
 
 if (!useSpecifiedOutDir && !args.includes("--no-clean")) {
   rimraf.sync(fromRoot(paths.output))
   console.log("Cleaned the build dir.")
 }
 
-const result = spawn.sync(
+const babelArguments = [
+  ...outDir,
+  ...copyFiles,
+  ...ignore,
+  ...config,
+  ...extensions,
+  "src",
+  sourceMaps,
+  ...args
+]
+
+const resultBabel = spawn.sync(
   resolveBin("babel-cli", { executable: "babel" }),
-  [
-    ...outDir,
-    ...copyFiles,
-    ...ignore,
-    ...config,
-    ...ignoreTypeDef,
-    "src",
-  ].concat(args),
+  babelArguments,
   { stdio: "inherit" },
 )
 
-process.exit(result.status)
+spawn.sync(
+  resolveBin("typescript", { executable: "tsc" }),
+  ['--emitDeclarationOnly'],
+  { stdio: "inherit" },
+)
+
+if (ignore.length > 0) {
+  const buildIgnore = ignore[1].split(',').map(x => `build/${x}`).join(",")
+
+  rimraf.sync(`{${buildIgnore}}`);
+}
+
+process.exit(resultBabel.status)
