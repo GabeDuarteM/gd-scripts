@@ -5,16 +5,13 @@
     "declaration": true,
     "sourceMap": true,
     "strict": true,
-    "noUnusedLocals": true,
     "lib": ["esnext"],
-    "typeRoots": ["../../node_modules/@types", "../@types"],
-    "outDir": "../../build",
+    "typeRoots": ["../../../../node_modules/@types", "../../../../src/@types"],
+    "outDir": "../../../../build",
 
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "allowJs": true,
-    "checkJs": true
+    "esModuleInterop": true
   },
-  "include": ["../../src/**/*"],
-  "exclude": ["../../node_modules/**/*", "../../build/**/*"]
+  "include": ["../../../../src/**/*"],
+  "exclude": ["../../../../node_modules/**/*", "../../../../build/**/*"]
 }

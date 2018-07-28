@@ -4,7 +4,9 @@ import rimraf from "rimraf"
 import { hasPkgProp, fromRoot, resolveBin, hasFile } from "../../utils"
 import paths from "../../paths"
 
-const args = process.argv.slice(2)
+const unnecessaryArgumentsCount = 2
+
+const args = process.argv.slice(unnecessaryArgumentsCount)
 const here = (p: string) => path.join(__dirname, p)
 
 const useBuiltinConfig =
@@ -17,7 +19,7 @@ const ignore = args.includes("--ignore")
   ? []
   : [
       "--ignore",
-      "**/*.test.js,**/*.test.ts,**/*.test.tsx,**/*.test.jsx,**/*.d.ts,__mocks__",
+      "**/*.test.js,**/*.test.ts,**/*.test.tsx,**/*.test.jsx,**/*.d.ts,__mocks__,@types",
     ]
 
 const copyFiles = args.includes("--no-copy-files") ? [] : ["--copy-files"]
@@ -31,6 +33,7 @@ const sourceMaps = "-s"
 
 if (!useSpecifiedOutDir && !args.includes("--no-clean")) {
   rimraf.sync(fromRoot(paths.output))
+  // eslint-disable-next-line no-console
   console.log("Cleaned the build dir.")
 }
 
@@ -57,7 +60,7 @@ spawn.sync(
   { stdio: "inherit" },
 )
 
-// Exlude ignored files from the build dir
+// Exclude ignored files from the build dir
 if (ignore.length > 0) {
   const buildIgnore = ignore[1]
     .split(",")

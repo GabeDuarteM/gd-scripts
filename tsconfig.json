@@ -1,3 +1,17 @@
 {
-  "extends": "./src/config/tsconfig.json"
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "declaration": true,
+    "sourceMap": true,
+    "strict": true,
+    "lib": ["esnext"],
+    "typeRoots": ["./node_modules/@types", "./src/@types"],
+    "outDir": "./build",
+
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["./node_modules/**/*", "./build/**/*"]
 }

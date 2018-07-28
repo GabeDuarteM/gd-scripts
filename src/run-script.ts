@@ -3,7 +3,73 @@ import spawn from "cross-spawn"
 import glob from "glob"
 import { SpawnSyncReturns } from "child_process"
 
-const [executor, ignoredBin, script, ...args] = process.argv
+import { isGdScripts } from "./utils"
+
+const [processExecutor, ignoredBin, script, ...args] = process.argv
+
+const executor = isGdScripts() ? "ts-node" : processExecutor
+
+const handleSignal = (result: SpawnSyncReturns<Buffer>) => {
+  if (result.signal === "SIGKILL") {
+    // eslint-disable-next-line no-console
+    console.log(
+      `The script "${script}" failed because the process exited too early. ` +
+        "This probably means the system ran out of memory or someone called " +
+        "`kill -9` on the process.",
+    )
+  } else if (result.signal === "SIGTERM") {
+    // eslint-disable-next-line no-console
+    console.log(
+      `The script "${script}" failed because the process exited too early. ` +
+        "Someone might have called `kill` or `killall`, or the system could " +
+        "be shutting down.",
+    )
+  }
+  process.exit(1)
+}
+
+const attemptResolve = (...resolveArgs: string[]) => {
+  try {
+    return (require.resolve as any)(...resolveArgs)
+  } catch (error) {
+    return null
+  }
+}
+
+// this is required to address an issue in cross-spawn
+// https://github.com/kentcdodds/kcd-scripts/issues/4
+const getEnv = () =>
+  Object.keys(process.env)
+    .filter(key => process.env[key] !== undefined)
+    .reduce(
+      (envCopy, key) => {
+        envCopy[key] = process.env[key] as any
+
+        return envCopy
+      },
+      {
+        [`SCRIPTS_${script.toUpperCase()}`]: true,
+      },
+    )
+
+const spawnScript = () => {
+  const relativeScriptPath = path.join(__dirname, "./scripts", script)
+  const scriptPath = attemptResolve(relativeScriptPath)
+
+  if (!scriptPath) {
+    throw new Error(`Unknown script "${script}".`)
+  }
+  const result = spawn.sync(executor, [scriptPath, ...args], {
+    stdio: "inherit",
+    env: getEnv(),
+  })
+
+  if (result.signal) {
+    handleSignal(result)
+  } else {
+    process.exit(result.status)
+  }
+}
 
 if (script) {
   spawnScript()
@@ -34,66 +100,5 @@ Options:
 
 May the force be with you.
   `.trim()
-  console.log(`\n${fullMessage}\n`)
-}
-
-function getEnv() {
-  // this is required to address an issue in cross-spawn
-  // https://github.com/kentcdodds/kcd-scripts/issues/4
-  return Object.keys(process.env)
-    .filter(key => process.env[key] !== undefined)
-    .reduce(
-      (envCopy, key) => {
-        envCopy[key] = process.env[key] as any
-
-        return envCopy
-      },
-      {
-        [`SCRIPTS_${script.toUpperCase()}`]: true,
-      },
-    )
-}
-
-function spawnScript() {
-  const relativeScriptPath = path.join(__dirname, "./scripts", script)
-  const scriptPath = attemptResolve(relativeScriptPath)
-
-  if (!scriptPath) {
-    throw new Error(`Unknown script "${script}".`)
-  }
-  const result = spawn.sync(executor, [scriptPath, ...args], {
-    stdio: "inherit",
-    env: getEnv(),
-  })
-
-  if (result.signal) {
-    handleSignal(result)
-  } else {
-    process.exit(result.status)
-  }
-}
-
-function handleSignal(result: SpawnSyncReturns<Buffer>) {
-  if (result.signal === "SIGKILL") {
-    console.log(
-      `The script "${script}" failed because the process exited too early. ` +
-        "This probably means the system ran out of memory or someone called " +
-        "`kill -9` on the process.",
-    )
-  } else if (result.signal === "SIGTERM") {
-    console.log(
-      `The script "${script}" failed because the process exited too early. ` +
-        "Someone might have called `kill` or `killall`, or the system could " +
-        "be shutting down.",
-    )
-  }
-  process.exit(1)
-}
-
-function attemptResolve(...resolveArgs: string[]) {
-  try {
-    return (require.resolve as any)(...resolveArgs)
-  } catch (error) {
-    return null
-  }
+  console.log(`\n${fullMessage}\n`) // eslint-disable-line no-console
 }
