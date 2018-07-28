@@ -5,8 +5,8 @@
   "author": "Gabriel Duarte <gabrielqduarte@gmail.com> (https://github.com/GabrielDuarteM/)",
   "license": "MIT",
   "scripts": {
-    "build": "cross-env IS_GD_SCRIPTS=true ts-node src build",
-    "lint": "cross-env IS_GD_SCRIPTS=true ts-node src lint",
+    "build": "ts-node src build",
+    "lint": "ts-node src lint",
     "type-check": "tsc --noEmit",
     "ci": "yarn type-check && yarn lint && yarn build"
   },
