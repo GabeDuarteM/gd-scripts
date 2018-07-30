@@ -24,7 +24,7 @@ const envTargets = isTest
   ? { node: "current" }
   : isWebpack || isRollup
     ? { browsers: browsersConfig }
-    : { node: "4.5" }
+    : { node: "8" }
 const envOptions = { modules: false, loose: true, targets: envTargets }
 
 module.exports = () => ({

@@ -24,6 +24,8 @@ const ignore = args.includes("--ignore")
 
 const copyFiles = args.includes("--no-copy-files") ? [] : ["--copy-files"]
 
+const isTypescript = hasFile("tsconfig.json")
+
 const useSpecifiedOutDir = args.includes("--out-dir")
 const outDir = useSpecifiedOutDir ? [] : ["--out-dir", paths.output]
 
@@ -54,11 +56,14 @@ const resultBabel = spawn.sync(
   { stdio: "inherit" },
 )
 
-spawn.sync(
-  resolveBin("typescript", { executable: "tsc" }),
-  ["--emitDeclarationOnly"],
-  { stdio: "inherit" },
-)
+if (isTypescript) {
+  spawn.sync(
+    resolveBin("typescript", { executable: "tsc" }),
+    ["--emitDeclarationOnly"],
+    { stdio: "inherit" },
+  )
+  console.log("Typescript declarations emitted.")
+}
 
 // Exclude ignored files from the build dir
 if (ignore.length > 0) {
