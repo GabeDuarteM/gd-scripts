@@ -2,19 +2,23 @@ process.env.BABEL_ENV = "test"
 process.env.NODE_ENV = "test"
 
 import isCI from "is-ci"
-import { hasPkgProp, hasFile } from "../utils"
+import { hasPkgProp, hasFile, logScriptMessage } from "../utils"
 
 const unnecessaryArgumentsCount = 2
 
 const args = process.argv.slice(unnecessaryArgumentsCount)
+const isCiScript = process.env.SCRIPT_CI === "true"
 
 const watch =
   !isCI &&
+  !isCiScript &&
   !args.includes("--no-watch") &&
   !args.includes("--coverage") &&
   !args.includes("--updateSnapshot")
     ? ["--watch"]
     : []
+
+const coverage = isCiScript ? ["--coverage"] : []
 
 const config =
   !args.includes("--config") &&
@@ -23,4 +27,6 @@ const config =
     ? ["--config", JSON.stringify(require("../config/jest.config"))]
     : []
 
-require("jest").run([...config, ...watch, ...args])
+logScriptMessage("TEST")
+
+require("jest").run([...config, ...watch, ...coverage, ...args])

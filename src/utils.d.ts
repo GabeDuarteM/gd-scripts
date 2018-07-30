@@ -12,3 +12,5 @@ export declare const ifAnyDep: (deps: any, t: any, f?: any) => any
 export declare const parseEnv: (name: string, def: any) => any
 export declare const envIsSet: (name: string) => boolean | "" | undefined
 export declare const isGdScripts: () => boolean
+export declare const hasTests: () => boolean
+export declare const logScriptMessage: (script: string) => void

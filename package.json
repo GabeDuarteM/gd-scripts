@@ -1,6 +1,6 @@
 {
   "name": "gd-scripts",
-  "version": "0.1.9",
+  "version": "0.1.12",
   "main": "index.js",
   "author": "Gabriel Duarte <gabrielqduarte@gmail.com> (https://github.com/GabrielDuarteM/)",
   "license": "MIT",
@@ -10,8 +10,9 @@
     "build": "ts-node src build",
     "lint": "ts-node src lint",
     "test": "ts-node src test",
-    "type-check": "tsc --noEmit",
-    "ci": "yarn type-check && yarn lint && yarn build"
+    "ci": "ts-node src ci",
+    "scripts": "ts-node src",
+    "type-check": "tsc --noEmit"
   },
   "bin": {
     "gd-scripts": "build/index.js"
@@ -43,6 +44,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-plugin-minify-dead-code-elimination": "^0.4.3",
     "browserslist": "^4.0.1",
+    "chalk": "^2.4.1",
     "cross-spawn": "^6.0.5",
     "eslint": "^5.2.0",
     "eslint-config-prettier": "^2.9.0",
@@ -63,6 +65,7 @@
   },
   "devDependencies": {
     "@types/arrify": "^1.0.4",
+    "@types/chalk": "^2.2.0",
     "@types/cross-spawn": "^6.0.0",
     "@types/glob": "^5.0.35",
     "@types/is-ci": "^1.1.0",

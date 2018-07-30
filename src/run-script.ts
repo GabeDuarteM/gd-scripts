@@ -4,6 +4,7 @@ import glob from "glob"
 import { SpawnSyncReturns } from "child_process"
 
 import { isGdScripts } from "./utils"
+import chalk from "chalk"
 
 const [processExecutor, ignoredBin, script, ...args] = process.argv
 
@@ -90,15 +91,18 @@ if (script) {
     .join("\n  ")
     .trim()
   const fullMessage = `
-Usage: ${ignoredBin} [script] [--flags]
+${chalk.cyan("Usage")}: 
+  ${ignoredBin} [script] [--flags]
 
-Available Scripts:
+${chalk.cyan("Available Scripts")}:
   ${scriptsAvailableMessage}
 
-Options:
-  All options depend on the script. Docs will be improved eventually, but for most scripts you can assume that the args you pass will be forwarded to the respective tool that's being run under the hood.
+${chalk.cyan("Options")}:
+  All options depend on the script. Docs will be improved eventually, 
+  but for most scripts you can assume that the args you pass will be 
+  forwarded to the respective tool that's being run under the hood.
 
-May the force be with you.
+${chalk.green("May the force be with you")}.
   `.trim()
   console.log(`\n${fullMessage}\n`) // eslint-disable-line no-console
 }

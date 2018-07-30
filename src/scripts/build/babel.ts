@@ -1,7 +1,13 @@
 import path from "path"
 import spawn from "cross-spawn"
 import rimraf from "rimraf"
-import { hasPkgProp, fromRoot, resolveBin, hasFile } from "../../utils"
+import {
+  hasPkgProp,
+  fromRoot,
+  resolveBin,
+  hasFile,
+  logScriptMessage,
+} from "../../utils"
 import paths from "../../paths"
 
 const unnecessaryArgumentsCount = 2
@@ -36,6 +42,10 @@ const extensions = ["--extensions", ".ts,.tsx,.js,.jsx"]
 const sourceMaps = isWatching ? [] : ["-s"]
 
 const watch = isWatching ? ["-w"] : []
+
+if (!isWatching) {
+  logScriptMessage("BUILD")
+}
 
 if (!useSpecifiedOutDir && !args.includes("--no-clean")) {
   rimraf.sync(fromRoot(paths.output))

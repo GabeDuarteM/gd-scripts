@@ -1,24 +1,18 @@
 const path = require("path")
+const { testMatch, testIgnores } = require("./jest.patterns")
 const { ifAnyDep, hasFile, hasPkgProp } = require("../utils")
 
 const here = p => path.join(__dirname, p)
 
 const useBuiltInBabelConfig = !hasFile(".babelrc") && !hasPkgProp("babel")
 
-const ignores = [
-  "/node_modules/",
-  "/fixtures/",
-  "/__tests__/helpers/",
-  "__mocks__",
-]
-
 const jestConfig = {
   testEnvironment: ifAnyDep(["webpack", "rollup", "react"], "jsdom", "node"),
   moduleFileExtensions: ["js", "jsx", "json", "ts", "tsx"],
   collectCoverageFrom: ["src/**/*.+(js|jsx|ts|tsx)"],
-  testMatch: ["**/*.test.ts", "**/*.test.js", "**/*.test.tsx", "**/*.test.jsx"],
-  testPathIgnorePatterns: [...ignores],
-  coveragePathIgnorePatterns: [...ignores, "src/(umd|cjs|esm)-entry.js$"],
+  testMatch,
+  testPathIgnorePatterns: [...testIgnores],
+  coveragePathIgnorePatterns: [...testIgnores, "src/(umd|cjs|esm)-entry.js$"],
   transformIgnorePatterns: ["[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"],
 }
 

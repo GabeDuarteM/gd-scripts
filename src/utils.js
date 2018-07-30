@@ -6,6 +6,10 @@ const arrify = require("arrify")
 const has = require("lodash.has")
 const readPkgUp = require("read-pkg-up")
 const which = require("which")
+const glob = require("glob")
+const chalk = require("chalk").default
+
+const { testMatch, testIgnores } = require("./config/jest.patterns")
 
 const { pkg, path: pkgPath } = readPkgUp.sync({
   cwd: fs.realpathSync(process.cwd()),
@@ -104,6 +108,30 @@ const parseEnv = (name, def) => {
   return def
 }
 
+const hasTests = () => {
+  const testPatterns = testMatch.join(",")
+  const ignorePatterns = testIgnores.map(
+    x => `${x}${x.endsWith("/") ? "" : "/"}**/*`,
+  )
+  const globStr = `{${testPatterns}}`
+  const testList = glob.sync(globStr, {
+    ignore: ignorePatterns,
+  })
+
+  return testList.length > 0
+}
+
+/**
+ * @param {string} script
+ */
+const logScriptMessage = script => {
+  console.log(
+    `${chalk.bgCyan(chalk.black("[gd-scripts]"))} Running ${chalk.cyan(
+      script.toUpperCase(),
+    )} script.\n`,
+  )
+}
+
 module.exports = {
   appDirectory,
   resolveBin,
@@ -114,4 +142,6 @@ module.exports = {
   parseEnv,
   envIsSet,
   isGdScripts,
+  hasTests,
+  logScriptMessage,
 }

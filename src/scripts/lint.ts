@@ -2,7 +2,7 @@ import path from "path"
 import spawn from "cross-spawn"
 import yargsParser from "yargs-parser"
 
-import { hasPkgProp, resolveBin, hasFile } from "../utils"
+import { hasPkgProp, resolveBin, hasFile, logScriptMessage } from "../utils"
 
 const unnecessaryArgumentsCount = 2
 
@@ -52,6 +52,8 @@ const lintArguments = [
   ...args,
   ...filesToApply,
 ]
+
+logScriptMessage("LINT")
 
 const result = spawn.sync(resolveBin("eslint"), lintArguments, {
   stdio: "inherit",
