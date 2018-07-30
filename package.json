@@ -1,18 +1,18 @@
 {
   "name": "gd-scripts",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "main": "index.js",
   "author": "Gabriel Duarte <gabrielqduarte@gmail.com> (https://github.com/GabrielDuarteM/)",
   "license": "MIT",
   "description": "CLI for common scripts for my projects",
   "scripts": {
+    "scripts": "ts-node src",
     "start": "ts-node src start",
     "build": "ts-node src build",
     "lint": "ts-node src lint",
     "test": "ts-node src test",
-    "ci": "ts-node src ci",
-    "scripts": "ts-node src",
-    "type-check": "tsc --noEmit"
+    "typecheck": "ts-node src typecheck",
+    "ci": "ts-node src ci"
   },
   "bin": {
     "gd-scripts": "build/index.js"
