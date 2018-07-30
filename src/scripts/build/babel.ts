@@ -9,6 +9,8 @@ const unnecessaryArgumentsCount = 2
 const args = process.argv.slice(unnecessaryArgumentsCount)
 const here = (p: string) => path.join(__dirname, p)
 
+const isWatching = process.env.SCRIPT_WATCH === "true"
+
 const useBuiltinConfig =
   !args.includes("--presets") && !hasFile(".babelrc") && !hasPkgProp("babel")
 const config = useBuiltinConfig
@@ -31,7 +33,9 @@ const outDir = useSpecifiedOutDir ? [] : ["--out-dir", paths.output]
 
 const extensions = ["--extensions", ".ts,.tsx,.js,.jsx"]
 
-const sourceMaps = "-s"
+const sourceMaps = isWatching ? [] : ["-s"]
+
+const watch = isWatching ? ["-w"] : []
 
 if (!useSpecifiedOutDir && !args.includes("--no-clean")) {
   rimraf.sync(fromRoot(paths.output))
@@ -46,7 +50,8 @@ const babelArguments = [
   ...config,
   ...extensions,
   "src",
-  sourceMaps,
+  ...sourceMaps,
+  ...watch,
   ...args,
 ]
 
@@ -56,7 +61,7 @@ const resultBabel = spawn.sync(
   { stdio: "inherit" },
 )
 
-if (isTypescript) {
+if (isTypescript && !isWatching) {
   spawn.sync(
     resolveBin("typescript", { executable: "tsc" }),
     ["--emitDeclarationOnly"],
@@ -66,7 +71,7 @@ if (isTypescript) {
 }
 
 // Exclude ignored files from the build dir
-if (ignore.length > 0) {
+if (ignore.length > 0 && !isWatching) {
   const buildIgnore = ignore[1]
     .split(",")
     .filter(x => x !== "**/*.d.ts") // Do not exclude type definitions

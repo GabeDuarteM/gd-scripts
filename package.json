@@ -6,6 +6,7 @@
   "license": "MIT",
   "description": "CLI for common scripts for my projects",
   "scripts": {
+    "start": "ts-node src start",
     "build": "ts-node src build",
     "lint": "ts-node src lint",
     "test": "ts-node src test",
