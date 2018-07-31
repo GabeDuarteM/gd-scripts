@@ -4,11 +4,13 @@ cache:
     - node_modules
     - ~/.npm
 node_js:
-  - 'node'
-  - 'lts/*'
+  - node
+  - lts/*
 script: yarn ci
 jobs:
   include:
     - stage: semantic-release
-      node_js: 'node'
-      script: yarn release
+      node_js: node
+      script: 
+        - yarn build
+        - yarn release
