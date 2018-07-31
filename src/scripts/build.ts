@@ -7,8 +7,8 @@ import {
   resolveBin,
   hasFile,
   logScriptMessage,
-} from "../../utils"
-import paths from "../../paths"
+} from "../utils"
+import paths from "../paths"
 
 const unnecessaryArgumentsCount = 2
 
@@ -20,15 +20,12 @@ const isWatching = process.env.SCRIPT_WATCH === "true"
 const useBuiltinConfig =
   !args.includes("--presets") && !hasFile(".babelrc") && !hasPkgProp("babel")
 const config = useBuiltinConfig
-  ? ["--presets", here("../../config/babelrc.js")]
+  ? ["--presets", here("../config/babelrc.js")]
   : []
 
 const ignore = args.includes("--ignore")
   ? []
-  : [
-      "--ignore",
-      "**/*.test.js,**/*.test.ts,**/*.test.tsx,**/*.test.jsx,**/*.d.ts,__mocks__,@types",
-    ]
+  : ["--ignore", "**/*.test.js,**/*.test.ts,**/*.d.ts,__mocks__,@types"]
 
 const copyFiles = args.includes("--no-copy-files") ? [] : ["--copy-files"]
 
@@ -37,7 +34,7 @@ const isTypescript = hasFile("tsconfig.json")
 const useSpecifiedOutDir = args.includes("--out-dir")
 const outDir = useSpecifiedOutDir ? [] : ["--out-dir", paths.output]
 
-const extensions = ["--extensions", ".ts,.tsx,.js,.jsx"]
+const extensions = ["--extensions", ".ts,.js"]
 
 const sourceMaps = isWatching ? [] : ["-s"]
 

@@ -64,50 +64,6 @@ const hasFile = (...p) => fs.existsSync(fromRoot(...p))
  */
 const hasPkgProp = props => arrify(props).some(prop => has(pkg, prop))
 
-/**
- * @param {string} pkgProp
- * @returns {function(any): boolean}
- */
-const hasPkgSubProp = pkgProp => props =>
-  hasPkgProp(arrify(props).map(p => `${pkgProp}.${p}`))
-
-const hasPeerDep = hasPkgSubProp("peerDependencies")
-const hasDep = hasPkgSubProp("dependencies")
-const hasDevDep = hasPkgSubProp("devDependencies")
-/**
- * @param {any} args
- */
-const hasAnyDep = args => [hasDep, hasDevDep, hasPeerDep].some(fn => fn(args))
-/**
- * @param {any} deps
- * @param {any} t
- * @param {any} f
- */
-const ifAnyDep = (deps, t, f) => (hasAnyDep(arrify(deps)) ? t : f)
-
-/**
- * @param {string} name
- */
-const envIsSet = name =>
-  process.env.hasOwnProperty(name) &&
-  process.env[name] &&
-  process.env[name] !== "undefined"
-
-/**
- * @param {string} name
- * @param {string} def
- */
-const parseEnv = (name, def) => {
-  if (envIsSet(name)) {
-    try {
-      return JSON.parse(/** @type {any} */ (process.env[name]))
-    } catch (err) {
-      return process.env[name]
-    }
-  }
-  return def
-}
-
 const hasTests = () => {
   const testPatterns = testMatch.join(",")
   const ignorePatterns = testIgnores.map(
@@ -133,14 +89,10 @@ const logScriptMessage = script => {
 }
 
 module.exports = {
-  appDirectory,
   resolveBin,
   fromRoot,
   hasFile,
   hasPkgProp,
-  ifAnyDep,
-  parseEnv,
-  envIsSet,
   isGdScripts,
   hasTests,
   logScriptMessage,

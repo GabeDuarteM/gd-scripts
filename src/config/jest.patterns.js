@@ -1,9 +1,6 @@
-const testMatch = [
-  "**/*.test.ts",
-  "**/*.test.js",
-  "**/*.test.tsx",
-  "**/*.test.jsx",
-]
+// @ts-check
+
+const testMatch = ["**/*.test.ts", "**/*.test.js"]
 const testIgnores = [
   "node_modules/",
   "fixtures/",
