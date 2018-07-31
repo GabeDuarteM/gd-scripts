@@ -1,8 +1,8 @@
-process.env.BABEL_ENV = "test"
-process.env.NODE_ENV = "test"
-
 import isCI from "is-ci"
 import { hasPkgProp, hasFile, logScriptMessage } from "../utils"
+
+process.env.BABEL_ENV = "test"
+process.env.NODE_ENV = "test"
 
 const unnecessaryArgumentsCount = 2
 

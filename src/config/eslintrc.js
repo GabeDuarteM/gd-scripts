@@ -8,7 +8,20 @@ module.exports = {
     sourceType: "module",
     ecmaVersion: 6,
   },
-  plugins: ["typescript"],
+  plugins: ["typescript", "import"],
+  settings: {
+    "import/resolver": {
+      node: {
+        extensions: [".mjs", ".js", ".json", "ts"],
+      },
+    },
+    "import/extensions": [".js", ".mjs", ".ts"],
+    "import/core-modules": [],
+    "import/ignore": [
+      "node_modules",
+      "\\.(coffee|scss|css|less|hbs|svg|json)$",
+    ],
+  },
   rules: {
     /* Possible Errors */
     "no-undef": "off", // issues with Interfaces: https://github.com/nzakas/eslint-plugin-typescript/issues/110
@@ -192,5 +205,29 @@ module.exports = {
     "typescript/no-triple-slash-reference": "error",
     "typescript/no-unused-vars": "error",
     "typescript/no-use-before-define": "error",
+
+    /* Import plugin */
+    "import/default": "error",
+    "import/no-absolute-path": "error",
+    "import/no-webpack-loader-syntax": "error",
+    "import/no-self-import": "error",
+    "import/no-cycle": ["error", { maxDepth: Infinity }],
+    "import/no-useless-path-segments": "error",
+    "import/export": "error",
+    "import/no-named-as-default": "error",
+    "import/no-named-as-default-member": "error",
+    "import/no-extraneous-dependencies": "error",
+    "import/no-mutable-exports": "error",
+    "import/no-amd": "error",
+    "import/first": "error",
+    "import/exports-last": "error",
+    "import/no-duplicates": "error",
+    "import/order": [
+      "error",
+      { groups: [["builtin", "external", "internal"]] },
+    ],
+    "import/newline-after-import": "error",
+    "import/no-named-default": "error",
+    "import/no-anonymous-default-export": "error",
   },
 }

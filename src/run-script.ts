@@ -2,9 +2,9 @@ import path from "path"
 import spawn from "cross-spawn"
 import glob from "glob"
 import { SpawnSyncReturns } from "child_process"
+import chalk from "chalk"
 
 import { isGdScripts } from "./utils"
-import chalk from "chalk"
 
 const [processExecutor, ignoredBin, script, ...args] = process.argv
 
