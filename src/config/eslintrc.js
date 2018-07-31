@@ -50,7 +50,6 @@ module.exports = {
     "no-iterator": "error",
     "no-labels": "error",
     "no-loop-func": "error",
-    "no-magic-numbers": ["error", { ignore: [0, 1] }],
     "no-multi-str": "error",
     "no-new-func": "error",
     "no-new-wrappers": "error",
