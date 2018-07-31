@@ -2,8 +2,9 @@ language: node_js
 cache:
   directories:
     - node_modules
+    - ~/.npm
 node_js:
   - 'node'
   - 'lts/*'
-  - '8'
 script: yarn ci
+after_success: yarn release

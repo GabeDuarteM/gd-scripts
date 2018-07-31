@@ -1,6 +1,6 @@
 {
   "name": "gd-scripts",
-  "version": "0.1.13",
+  "version": "0.0.0-development",
   "main": "index.js",
   "author": "Gabriel Duarte <gabrielqduarte@gmail.com> (https://github.com/GabrielDuarteM/)",
   "license": "MIT",
@@ -12,7 +12,8 @@
     "lint": "ts-node src lint",
     "test": "ts-node src test",
     "typecheck": "ts-node src typecheck",
-    "ci": "ts-node src ci"
+    "ci": "ts-node src ci",
+    "release": "semantic-release"
   },
   "bin": {
     "gd-scripts": "build/index.js"
@@ -74,6 +75,7 @@
     "@types/rimraf": "^2.0.2",
     "@types/which": "^1.3.1",
     "eslint-plugin-import": "^2.13.0",
+    "semantic-release": "^15.9.2",
     "ts-node": "^7.0.0"
   }
 }
