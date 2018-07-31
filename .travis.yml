@@ -7,4 +7,6 @@ node_js:
   - 'node'
   - 'lts/*'
 script: yarn ci
-after_success: yarn release
+after_success: 
+  - yarn global add travis-deploy-once
+  - travis-deploy-once && yarn release
