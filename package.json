@@ -1,6 +1,6 @@
 {
   "name": "gd-scripts",
-  "version": "0.0.0-development",
+  "version": "1.0.2-beta.5",
   "main": "index.js",
   "author": "Gabriel Duarte <gabrielqduarte@gmail.com> (https://github.com/GabrielDuarteM/)",
   "license": "MIT",
@@ -77,5 +77,9 @@
     "eslint-plugin-import": "^2.13.0",
     "semantic-release": "^15.9.2",
     "ts-node": "^7.0.0"
+  },
+  "peerDependencies": {
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-prettier": "^2.6.2"
   }
 }
