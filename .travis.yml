@@ -3,9 +3,7 @@ cache: yarn
 node_js:
   - node
   - lts/*
-script:
-  - yarn ci
-  - yarn test
+script: yarn ci
 jobs:
   include:
     - stage: semantic-release
@@ -14,3 +12,6 @@ jobs:
       script:
         - yarn build
         - yarn release
+    - stage: tests
+      node_js: node
+      script: yarn test
