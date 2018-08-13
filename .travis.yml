@@ -4,14 +4,13 @@ node_js:
   - node
   - lts/*
 script: yarn ci
+after_success:
+  - yarn test
 jobs:
   include:
     - stage: semantic-release
-      if: branch = master
-      node_js: node
-      script:
-        - yarn build
-        - yarn release
-    - stage: tests
-      node_js: node
-      script: yarn test
+        if: branch = master
+        node_js: node
+        script:
+          - yarn build
+          - yarn release
