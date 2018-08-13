@@ -78,14 +78,18 @@ const hasTests = () => {
 }
 
 /**
+ * @param {string} message
+ */
+const logMessage = message => {
+  console.log(`${chalk.bgCyan(chalk.black("[gd-scripts]"))} ${message}\n`)
+}
+
+/**
  * @param {string} script
  */
 const logScriptMessage = script => {
-  console.log(
-    `${chalk.bgCyan(chalk.black("[gd-scripts]"))} Running ${chalk.cyan(
-      script.toUpperCase(),
-    )} script.\n`,
-  )
+  const scriptMessage = `Running ${chalk.cyan(script.toUpperCase())} script.`
+  logMessage(scriptMessage)
 }
 
 module.exports = {
@@ -95,5 +99,6 @@ module.exports = {
   hasPkgProp,
   isGdScripts,
   hasTests,
+  logMessage,
   logScriptMessage,
 }

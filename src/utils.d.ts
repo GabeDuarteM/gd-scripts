@@ -9,4 +9,5 @@ export declare const hasFile: (...p: string[]) => boolean
 export declare const hasPkgProp: (props: any) => boolean
 export declare const isGdScripts: () => boolean
 export declare const hasTests: () => boolean
+export declare const logMessage: (messsage: string) => void
 export declare const logScriptMessage: (script: string) => void

@@ -49,7 +49,7 @@ const getEnv = () =>
         return envCopy
       },
       {
-        [`SCRIPTS_${script.toUpperCase()}`]: true,
+        [`SCRIPTS_${script.toUpperCase()}`]: true.toString(),
       },
     )
 
