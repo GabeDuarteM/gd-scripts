@@ -58,18 +58,18 @@ const logStatus = (repoName: string, status: number, spaceLength: number) => {
 const test = async () => {
   const totalSteps = 3
   let currStep = 0
-  // await runFuncOnEveryRepo(
-  //   cloneOrPull,
-  //   "Cloning repo",
-  //   (currStep += 1),
-  //   totalSteps,
-  // )
-  // await runFuncOnEveryRepo(
-  //   runYarnAddGdScripts,
-  //   "Installing the new version of gd-scripts",
-  //   (currStep += 1),
-  //   totalSteps,
-  // )
+  await runFuncOnEveryRepo(
+    cloneOrPull,
+    "Cloning repo",
+    (currStep += 1),
+    totalSteps,
+  )
+  await runFuncOnEveryRepo(
+    runYarnAddGdScripts,
+    "Installing the new version of gd-scripts",
+    (currStep += 1),
+    totalSteps,
+  )
   await runFuncOnEveryRepo(
     runYarnCi,
     "Running CI Script",
