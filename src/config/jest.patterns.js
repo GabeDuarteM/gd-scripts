@@ -3,7 +3,7 @@
 const testMatch = ["**/*.test.ts", "**/*.test.js"]
 const testIgnores = [
   "node_modules/",
-  "fixtures/",
+  "<rootDir>/fixtures/",
   "__tests__/helpers/",
   "__mocks__",
 ]
