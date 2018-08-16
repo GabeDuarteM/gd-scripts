@@ -20,7 +20,11 @@
     "gd-scripts": "build/index.js"
   },
   "files": [
-    "build"
+    "build",
+    "babel.js",
+    "eslint.js",
+    "prettier.js",
+    "semver.js"
   ],
   "resolutions": {
     "babel-core": "^7.0.0-bridge.0"

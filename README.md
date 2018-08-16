@@ -61,7 +61,7 @@ So, if we were to do this for ESLint, you could create an `.eslintrc.js` with th
 contents of:
 
 ```
-module.exports = require("gd-scripts/build/config/eslintrc")
+module.exports = require("gd-scripts/eslint")
 ```
 
 > Note: `gd-scripts` intentionally does not merge things for you when you start
