@@ -23,11 +23,13 @@ for linting, testing, building, and more.
 ## Installation
 
 npm:
+
 ```
 npm install --save-dev gd-scripts
 ```
 
 yarn:
+
 ```
 yarn add -D gd-scripts
 ```
