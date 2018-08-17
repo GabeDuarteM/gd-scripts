@@ -56,7 +56,7 @@
     "eslint-plugin-prettier": "^2.6.2",
     "eslint-plugin-typescript": "^0.12.0",
     "glob": "^7.1.2",
-    "is-ci": "^1.1.0",
+    "is-ci": "^1.2.0",
     "jest": "^23.5.0",
     "lodash.has": "^4.5.2",
     "mkdirp": "^0.5.1",
