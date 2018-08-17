@@ -81,11 +81,12 @@ if (script) {
   // So we normalize it before attempting to strip out the scripts path.
   const scriptsAvailableMessage = scriptsAvailable
     .map(path.normalize)
+    .filter(x => !(x.endsWith(".map") || x.endsWith(".d.ts")))
     .map(s =>
       s
         .replace(scriptsPath, "")
         .replace(/__tests__/, "")
-        .replace(/\.ts$/, ""),
+        .replace(/\.(t|j)s$/, ""),
     )
     .filter(Boolean)
     .join("\n  ")
