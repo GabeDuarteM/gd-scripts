@@ -1,6 +1,7 @@
 <div align="center">
   <h1>🛠 gd-scripts 📦</h1>
-  <p>CLI toolbox for common scripts for my projects, <strike>copied</strike> inspired from <a href="https://github.com/kentcdodds/kcd-scripts">kcd-scripts</a>.</p>
+
+  <p>CLI with common scripts for my projects, <strike>copied</strike> inspired from <a href="https://github.com/kentcdodds/kcd-scripts">kcd-scripts</a>.</p>
 </div>
 
 <p align="center">
