@@ -2,9 +2,9 @@
   "name": "gd-scripts",
   "version": "0.0.0-development",
   "main": "index.js",
-  "author": "Gabriel Duarte <gabrielqduarte@gmail.com> (https://github.com/GabrielDuarteM/)",
+  "author": "Gabriel Duarte (https://github.com/GabrielDuarteM/)",
   "license": "MIT",
-  "description": "CLI for common scripts for my projects",
+  "description": "CLI with common scripts for my projects",
   "scripts": {
     "scripts": "ts-node -T src",
     "start": "ts-node -T src start",
@@ -16,6 +16,13 @@
     "ci": "ts-node -T src ci",
     "release": "semantic-release"
   },
+  "keywords": [
+    "gd-scripts",
+    "cli",
+    "toolbox",
+    "react-scripts",
+    "kcd-scripts"
+  ],
   "bin": {
     "gd-scripts": "build/index.js"
   },
@@ -27,9 +34,6 @@
     "semver.js",
     "typescript.json"
   ],
-  "resolutions": {
-    "babel-core": "^7.0.0-bridge.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/gabrielduartem/gd-scripts.git"
@@ -37,6 +41,7 @@
   "bugs": {
     "url": "https://github.com/gabrielduartem/gd-scripts/issues"
   },
+  "homepage": "https://github.com/GabrielDuarteM/gd-scripts#readme",
   "dependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
