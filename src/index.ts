@@ -1,16 +1,24 @@
 #!/usr/bin/env node
+import get from "lodash.get"
+import { logMessage } from "./utils"
 
-const resolutions = require(`${process.cwd()}/package.json`).resolutions
+const pkg = require(`${process.cwd()}/package.json`)
 
-if (!resolutions || resolutions["babel-core"] !== "^7.0.0-bridge.0") {
-  console.warn(`
-[gd-scripts]: babel-core should be set to bridge mode to avoid errors. To do that, add the following code to your package.json:
+const babelCoreBridgeVersion = "^7.0.0-bridge.0"
 
-"resolutions": {
-  "babel-core": "^7.0.0-bridge.0"
-},
+const babelCoreDevDep = get(pkg, "devDependencies.babel-core")
+const babelCoreDep = get(pkg, "dependencies.babel-core")
+const babelCoreResolutions = get(pkg, "resolutions.babel-core")
 
-`)
+if (
+  (!babelCoreDevDep && !babelCoreDep && !babelCoreResolutions) ||
+  (babelCoreDevDep && babelCoreDevDep !== babelCoreBridgeVersion) ||
+  (babelCoreDep && babelCoreDep !== babelCoreBridgeVersion) ||
+  (babelCoreResolutions && babelCoreResolutions !== babelCoreBridgeVersion)
+) {
+  logMessage(
+    "babel-core should be set to bridge mode to avoid errors. To do that run 'npm i -D babel-core@^7.0.0-bridge.0'",
+  )
 }
 
 require("./run-script")
