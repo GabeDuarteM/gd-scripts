@@ -8,7 +8,7 @@ Please fill out this template with all the relevant information so we can
 understand what's going on and fix the issue.
 -->
 
-# Pull request
+# Issue
 
 <!-- Also, to avoid duplicate issues, please check off the following list. -->
 <!-- Checked checkbox should look like this: [x] -->
