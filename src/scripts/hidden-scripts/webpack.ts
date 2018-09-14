@@ -1,11 +1,47 @@
 import webpack from "webpack"
 import WebpackDevServer, { Configuration } from "webpack-dev-server"
-import webpackConfig from "../../config/webpack.config.dev"
-import { fromRoot } from "../../utils"
+import { join } from "path"
+
+import webpackConfigDev from "../../config/webpack.config.dev"
+import webpackConfigProd from "../../config/webpack.config.prod"
+import { fromRoot, checkRequiredFiles, RequiredFilesFailed } from "../../utils"
 
 const protocol = process.env.HTTPS === "true" ? "https" : "http"
+const paths = {
+  html: fromRoot(join("public", "index.html")),
+  js: fromRoot(join("src", "index.js")),
+  ts: fromRoot(join("src", "index.tsx")),
+}
+const files = [paths.html, paths.js, paths.ts]
 
-const compiler = webpack(webpackConfig)
+const checkedFiles = files.map(file => checkRequiredFiles(file))
+const failedCheckedFiles = checkedFiles.filter(
+  x => x.success === false,
+) as RequiredFilesFailed[]
+
+if (failedCheckedFiles) {
+  let shouldFail = false
+  const failedHtml = failedCheckedFiles.find(x => x.fileName === "index.html")
+  const failedJs = failedCheckedFiles.find(x => x.fileName === "index.js")
+  const failedTs = failedCheckedFiles.find(x => x.fileName === "index.tsx")
+
+  if (failedHtml || (failedJs && failedTs)) {
+    const failMessage = failedHtml
+      ? failedHtml.message
+      : (failedTs as RequiredFilesFailed).message
+    console.log(failMessage)
+    shouldFail = true
+  }
+
+  if (shouldFail) {
+    process.exit(1)
+  }
+}
+
+const config =
+  process.env.NODE_ENV === "production" ? webpackConfigProd : webpackConfigDev
+
+const compiler = webpack(config)
 const devServerOptions: Configuration = {
   // Enable gzip compression of generated files.
   compress: true,
@@ -34,7 +70,7 @@ const devServerOptions: Configuration = {
   hot: true,
   // It is important to tell WebpackDevServer to use the same "root" path
   // as we specified in the config. In development, we always serve from /.
-  publicPath: (webpackConfig.output as webpack.Output).publicPath,
+  publicPath: (config.output as webpack.Output).publicPath,
   // Enable HTTPS if the HTTPS environment variable is set to 'true'
   https: protocol === "https",
   host: "0.0.0.0",

@@ -119,6 +119,37 @@ const logScriptMessage = script => {
   logMessage(scriptMessage)
 }
 
+const checkRequiredFiles = (...files) => {
+  let currentFilePath
+  let currentDirName
+  let currentFileName
+  try {
+    files.forEach(filePath => {
+      currentFilePath = filePath
+      currentDirName = path.dirname(currentFilePath)
+      currentFileName = path.basename(currentFilePath)
+      fs.accessSync(filePath, fs.constants.F_OK)
+    })
+    return {
+      success: true,
+      fileName: currentFileName,
+      dirName: currentDirName,
+    }
+  } catch (err) {
+    const message = `
+${chalk.red("Could not find a required file.")}
+${chalk.red("  Name: ") + chalk.cyan(currentFileName)}
+${chalk.red("  Searched in: ") + chalk.cyan(currentDirName)}
+    `.trim()
+    return {
+      success: false,
+      fileName: currentFileName,
+      dirName: currentDirName,
+      message,
+    }
+  }
+}
+
 module.exports = {
   resolveBin,
   fromRoot,
@@ -132,4 +163,5 @@ module.exports = {
   ifAnyDep,
   appDirectory,
   pkg,
+  checkRequiredFiles,
 }

@@ -37,7 +37,10 @@ const attemptResolve = (...resolveArgs: string[]) => {
   }
 }
 
-const getNodeEnv: () => 'test' | 'development' | 'production' = () => {
+const getNodeEnv: () => string = () => {
+  if (process.env.NODE_ENV) {
+    return process.env.NODE_ENV
+  }
   switch (script) {
     case 'test':
       return 'test'

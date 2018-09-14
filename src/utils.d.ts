@@ -22,5 +22,19 @@ export declare const ifAnyDep: <T, Y>(
   ifTrue: T,
   ifFalse: Y,
 ) => T | Y
+export interface RequiredFilesSuccess {
+  success: true
+  dirName: string
+  fileName: string
+}
+export interface RequiredFilesFailed {
+  success: false
+  dirName: string
+  fileName: string
+  message: string
+}
+export declare const checkRequiredFiles: (
+  ...files: string[]
+) => RequiredFilesSuccess | RequiredFilesFailed
 export declare const appDirectory: string
 export declare const pkg: Package
