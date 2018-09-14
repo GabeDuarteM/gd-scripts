@@ -37,6 +37,17 @@ const attemptResolve = (...resolveArgs: string[]) => {
   }
 }
 
+const getNodeEnv: () => 'test' | 'development' | 'production' = () => {
+  switch (script) {
+    case 'test':
+      return 'test'
+    case 'build':
+      return 'production'
+    default:
+      return 'development'
+  }
+}
+
 // this is required to address an issue in cross-spawn
 // https://github.com/kentcdodds/kcd-scripts/issues/4
 const getEnv = () =>
@@ -50,6 +61,7 @@ const getEnv = () =>
       },
       {
         [`SCRIPTS_${script.toUpperCase()}`]: true.toString(),
+        NODE_ENV: getNodeEnv(),
       },
     )
 
@@ -89,6 +101,7 @@ if (script) {
         .replace(/\.(t|j)s$/, ''),
     )
     .filter(Boolean)
+    .filter(x => x !== 'hidden-scripts')
     .join('\n  ')
     .trim()
   const fullMessage = `

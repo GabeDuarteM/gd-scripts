@@ -25,7 +25,10 @@ const config = useBuiltinConfig
 
 const ignore = args.includes('--ignore')
   ? []
-  : ['--ignore', '**/*.test.js,**/*.test.ts,**/*.d.ts,__mocks__,@types']
+  : [
+      '--ignore',
+      '**/*.test.js,**/*.test.ts,**/*.test.tsx,**/*.d.ts,__mocks__,@types',
+    ]
 
 const copyFiles = args.includes('--no-copy-files') ? [] : ['--copy-files']
 
@@ -34,7 +37,7 @@ const isTypescript = hasFile('tsconfig.json')
 const useSpecifiedOutDir = args.includes('--out-dir')
 const outDir = useSpecifiedOutDir ? [] : ['--out-dir', paths.output]
 
-const extensions = ['--extensions', '.ts,.js']
+const extensions = ['--extensions', '.ts,.tsx,.js']
 
 const sourceMaps = isWatching ? [] : ['-s']
 
@@ -63,7 +66,7 @@ const babelArguments = [
 ]
 
 const resultBabel = spawn.sync(
-  resolveBin('babel-cli', { executable: 'babel' }),
+  resolveBin('@babel/cli', { executable: 'babel' }),
   babelArguments,
   { stdio: 'inherit' },
 )
