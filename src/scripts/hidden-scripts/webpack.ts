@@ -6,7 +6,7 @@ import printHostingInstructions from "react-dev-utils/printHostingInstructions"
 import FileSizeReporter from "react-dev-utils/FileSizeReporter"
 import printBuildError from "react-dev-utils/printBuildError"
 import { printBrowsers } from "react-dev-utils/browsersHelper"
-import { emptyDirSync, copySync } from "fs-extra"
+import { emptyDirSync, copySync, writeFile } from "fs-extra"
 import chalk from "chalk"
 
 import webpackConfigDev from "../../config/webpack.config.dev"
@@ -52,6 +52,9 @@ if (failedCheckedFiles) {
     process.exit(1)
   }
 }
+// Process CLI arguments
+const argv = process.argv.slice(2)
+const writeStatsJson = argv.indexOf("--stats") !== -1
 
 const config =
   process.env.NODE_ENV === "production" ? webpackConfigProd : webpackConfigDev
@@ -71,11 +74,25 @@ if (process.env.SCRIPTS_BUILD) {
     warnings: string[]
   }
 
+  const createBundleStats = (bundleStats: string) =>
+    new Promise((resolve, reject) => {
+      writeFile(join(paths.output, "bundle-stats.json"), bundleStats, err => {
+        if (err) {
+          reject(err)
+          return
+        }
+
+        resolve()
+        return
+      })
+    })
+
   const build = (): Promise<BuildReturn> => {
     console.log("Creating an optimized production build...")
+    console.log()
 
     return new Promise((resolve, reject) => {
-      compiler.run((err, stats) => {
+      compiler.run(async (err, stats) => {
         if (err) {
           return reject(err)
         }
@@ -108,6 +125,10 @@ if (process.env.SCRIPTS_BUILD) {
         const resolveArgs = {
           stats,
           warnings: messages.warnings,
+        }
+
+        if (writeStatsJson) {
+          await createBundleStats(JSON.stringify(stats.toJson()))
         }
 
         return resolve(resolveArgs)
