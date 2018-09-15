@@ -6,6 +6,8 @@ import {
 import { join, resolve } from "path"
 import HtmlWebpackPlugin from "html-webpack-plugin"
 import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin"
+import WatchMissingNodeModulesPlugin from "react-dev-utils/WatchMissingNodeModulesPlugin"
+import ModuleScopePlugin from "react-dev-utils/ModuleScopePlugin"
 import ManifestPlugin from "webpack-manifest-plugin"
 
 import createBabelConfig from "./babelrc"
@@ -39,8 +41,17 @@ const config: Configuration = {
   mode: "development",
   devtool: "cheap-module-source-map",
   entry: [
-    `${require.resolve("webpack-dev-server/client")}?/`,
-    require.resolve("webpack/hot/dev-server"),
+    // Include an alternative client for WebpackDevServer. A client's job is to
+    // connect to WebpackDevServer by a socket and get notified about changes.
+    // When you save a file, the client will either apply hot updates (in case
+    // of CSS changes), or refresh the page (in case of JS changes). When you
+    // make a syntax error, this client will display a syntax error overlay.
+    // Note: instead of the default WebpackDevServer client, we use a custom one
+    // to bring better experience for Create React App users. You can replace
+    // the line below with these two lines if you prefer the stock client:
+    // require.resolve('webpack-dev-server/client') + '?/',
+    // require.resolve('webpack/hot/dev-server'),
+    require.resolve("react-dev-utils/webpackHotDevClient"),
     entry,
   ],
   output: {
