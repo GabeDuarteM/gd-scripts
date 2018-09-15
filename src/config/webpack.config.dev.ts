@@ -11,7 +11,7 @@ import ModuleScopePlugin from "react-dev-utils/ModuleScopePlugin"
 import ManifestPlugin from "webpack-manifest-plugin"
 
 import createBabelConfig from "./babelrc"
-import { hasFile, fromRoot } from "../utils"
+import { hasFile, fromRoot, appDirectory } from "../utils"
 
 const useBuiltinConfig = !hasFile(".babelrc")
 const babelConfig = useBuiltinConfig && createBabelConfig()
@@ -78,6 +78,14 @@ const config: Configuration = {
   },
   resolve: {
     extensions: [".web.js", ".mjs", ".js", ".json", ".web.jsx", ".ts", ".tsx"],
+    plugins: [
+      // Prevents users from importing files from outside of src/ (or node_modules/).
+      // This often causes confusion because we only process files within src/ with babel.
+      // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
+      // please link the files into your node_modules/ and let module-resolution kick in.
+      // Make sure your source files are compiled, as they will not be processed in any way.
+      new ModuleScopePlugin(appDirectory, [join(appDirectory, "package.json")]),
+    ],
   },
   module: {
     // Makes missing exports an error instead of warning
@@ -194,6 +202,11 @@ const config: Configuration = {
     }),
     new HotModuleReplacementPlugin(),
     new CaseSensitivePathsPlugin(),
+    // If you require a missing module and then `npm install` it, you still have
+    // to restart the development server for Webpack to discover it. This plugin
+    // makes the discovery automatic so you don't have to restart.
+    // See https://github.com/facebook/create-react-app/issues/186
+    new WatchMissingNodeModulesPlugin(join(appDirectory, "node_modules")),
     // Generate a manifest file which contains a mapping of all asset filenames
     // to their corresponding output file so that tools can pick it up without
     // having to parse `index.html`.
