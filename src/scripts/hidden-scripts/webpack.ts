@@ -1,16 +1,32 @@
-import webpack from "webpack"
+import webpack, { Stats } from "webpack"
 import WebpackDevServer, { Configuration } from "webpack-dev-server"
 import { join } from "path"
+import formatWebpackMessages from "react-dev-utils/formatWebpackMessages"
+import printHostingInstructions from "react-dev-utils/printHostingInstructions"
+import FileSizeReporter from "react-dev-utils/FileSizeReporter"
+import printBuildError from "react-dev-utils/printBuildError"
+import { printBrowsers } from "react-dev-utils/browsersHelper"
+import { emptyDirSync, copySync } from "fs-extra"
+import chalk from "chalk"
 
 import webpackConfigDev from "../../config/webpack.config.dev"
 import webpackConfigProd from "../../config/webpack.config.prod"
-import { fromRoot, checkRequiredFiles, RequiredFilesFailed } from "../../utils"
+import {
+  fromRoot,
+  checkRequiredFiles,
+  RequiredFilesFailed,
+  pkg,
+  appDirectory,
+} from "../../utils"
 
 const paths = {
   html: fromRoot(join("public", "index.html")),
   js: fromRoot(join("src", "index.js")),
   ts: fromRoot(join("src", "index.tsx")),
+  output: fromRoot("build"),
+  public: fromRoot("public"),
 }
+
 const files = [paths.html, paths.js, paths.ts]
 
 const checkedFiles = files.map(file => checkRequiredFiles(file))
@@ -43,12 +59,139 @@ const config =
 const compiler = webpack(config)
 
 if (process.env.SCRIPTS_BUILD) {
-  compiler.run(err => {
-    if (err) {
-      throw err
+  const copyPublicFolder = () => {
+    copySync(paths.public, paths.output, {
+      dereference: true,
+      filter: file => file !== paths.html,
+    })
+  }
+
+  interface BuildReturn {
+    stats: Stats
+    warnings: string[]
+  }
+
+  const build = (): Promise<BuildReturn> => {
+    console.log("Creating an optimized production build...")
+
+    return new Promise((resolve, reject) => {
+      compiler.run((err, stats) => {
+        if (err) {
+          return reject(err)
+        }
+
+        const messages = formatWebpackMessages((stats as any).toJson({}, true))
+        if (messages.errors.length) {
+          // Only keep the first error. Others are often indicative
+          // of the same problem, but confuse the reader with noise.
+          if (messages.errors.length > 1) {
+            messages.errors.length = 1
+          }
+          return reject(new Error(messages.errors.join("\n\n")))
+        }
+
+        if (
+          process.env.CI &&
+          (typeof process.env.CI !== "string" ||
+            process.env.CI.toLowerCase() !== "false") &&
+          messages.warnings.length
+        ) {
+          console.log(
+            chalk.yellow(
+              "\nTreating warnings as errors because process.env.CI = true.\n" +
+                "Most CI servers set it automatically.\n",
+            ),
+          )
+          return reject(new Error(messages.warnings.join("\n\n")))
+        }
+
+        const resolveArgs = {
+          stats,
+          warnings: messages.warnings,
+        }
+
+        return resolve(resolveArgs)
+      })
+    })
+  }
+
+  const measureFileSizesBeforeBuild =
+    FileSizeReporter.measureFileSizesBeforeBuild
+
+  const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild
+
+  // These sizes are pretty large. We'll warn for bundles exceeding them.
+  const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024
+  const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024
+  ;(async () => {
+    try {
+      // First, read the current file sizes in build directory.
+      // This lets us display how much they changed later.
+      const previousFileSizes = await measureFileSizesBeforeBuild(paths.output)
+      // Remove all content but keep the directory so that
+      // if you're in it, you don't end up in Trash
+      emptyDirSync(paths.output)
+      // Merge with the public folder
+      copyPublicFolder()
+      // Start the webpack build
+      const { stats, warnings } = await build()
+      try {
+        if (warnings.length) {
+          console.log(chalk.yellow("Compiled with warnings.\n"))
+          console.log(warnings.join("\n\n"))
+          console.log(
+            // eslint-disable-next-line prefer-template
+            "\nSearch for the " +
+              chalk.underline(chalk.yellow("keywords")) +
+              " to learn more about each warning.",
+          )
+          console.log(
+            // eslint-disable-next-line prefer-template
+            "To ignore, add " +
+              chalk.cyan("// eslint-disable-next-line") +
+              " to the line before.\n",
+          )
+        } else {
+          console.log(chalk.green("Compiled successfully.\n"))
+        }
+
+        console.log("File sizes after gzip:\n")
+        printFileSizesAfterBuild(
+          stats,
+          previousFileSizes,
+          paths.output,
+          WARN_AFTER_BUNDLE_GZIP_SIZE,
+          WARN_AFTER_CHUNK_GZIP_SIZE,
+        )
+        console.log()
+
+        const appPackage = pkg
+        const publicUrl = "/"
+        const publicPath = (config.output as webpack.Output).publicPath
+        const buildFolder = paths.output
+        printHostingInstructions(
+          appPackage,
+          publicUrl,
+          publicPath,
+          buildFolder,
+          false,
+        )
+        printBrowsers(appDirectory)
+      } catch (err) {
+        console.log(chalk.red("Failed to compile.\n"))
+        printBuildError(err)
+        process.exit(1)
+        return
+      }
+    } catch (err) {
+      if (err && err.message) {
+        console.log(err.message)
+      }
+      process.exit(1)
+      return
     }
     process.exit(0)
-  })
+  })()
 } else {
   const protocol = process.env.HTTPS === "true" ? "https" : "http"
 
@@ -69,7 +212,7 @@ if (process.env.SCRIPTS_BUILD) {
     // for files like `favicon.ico`, `manifest.json`, and libraries that are
     // for some reason broken when imported through Webpack. If you just want to
     // use an image, put it in `src` and `import` it from JavaScript instead.
-    contentBase: fromRoot("public"),
+    contentBase: paths.public,
     // By default files from `contentBase` will not trigger a page reload.
     watchContentBase: true,
     // Enable hot reloading server. It will provide /sockjs-node/ endpoint
