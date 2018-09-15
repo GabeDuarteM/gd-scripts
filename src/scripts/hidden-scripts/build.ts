@@ -1,13 +1,7 @@
 import path from "path"
 import spawn from "cross-spawn"
 import rimraf from "rimraf"
-import {
-  hasPkgProp,
-  fromRoot,
-  resolveBin,
-  hasFile,
-  logScriptMessage,
-} from "../../utils"
+import { hasPkgProp, resolveBin, hasFile, logScriptMessage } from "../../utils"
 import paths from "../../paths"
 
 const unnecessaryArgumentsCount = 2
@@ -48,7 +42,7 @@ if (!isWatching) {
 }
 
 if (!useSpecifiedOutDir && !args.includes("--no-clean")) {
-  rimraf.sync(fromRoot(paths.output))
+  rimraf.sync(paths.output)
   // eslint-disable-next-line no-console
   console.log("Cleaned the build dir.")
 }

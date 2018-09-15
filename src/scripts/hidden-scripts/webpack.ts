@@ -1,31 +1,31 @@
 import webpack, { Stats } from "webpack"
-import WebpackDevServer, { Configuration } from "webpack-dev-server"
+import WebpackDevServer from "webpack-dev-server"
 import { join } from "path"
+import { emptyDirSync, copySync, writeFile } from "fs-extra"
+import chalk from "chalk"
 import formatWebpackMessages from "react-dev-utils/formatWebpackMessages"
 import printHostingInstructions from "react-dev-utils/printHostingInstructions"
 import FileSizeReporter from "react-dev-utils/FileSizeReporter"
 import printBuildError from "react-dev-utils/printBuildError"
-import { printBrowsers } from "react-dev-utils/browsersHelper"
-import { emptyDirSync, copySync, writeFile } from "fs-extra"
-import chalk from "chalk"
+import { printBrowsers, checkBrowsers } from "react-dev-utils/browsersHelper"
+import {
+  choosePort,
+  createCompiler,
+  prepareProxy,
+  prepareUrls,
+} from "react-dev-utils/WebpackDevServerUtils"
+import clearConsole from "react-dev-utils/clearConsole"
 
 import webpackConfigDev from "../../config/webpack.config.dev"
 import webpackConfigProd from "../../config/webpack.config.prod"
+import createDevServerConfig from "../../config/webpackDevServer.config"
 import {
-  fromRoot,
   checkRequiredFiles,
   RequiredFilesFailed,
   pkg,
   appDirectory,
 } from "../../utils"
-
-const paths = {
-  html: fromRoot(join("public", "index.html")),
-  js: fromRoot(join("src", "index.js")),
-  ts: fromRoot(join("src", "index.tsx")),
-  output: fromRoot("build"),
-  public: fromRoot("public"),
-}
+import paths from "../../paths"
 
 const files = [paths.html, paths.js, paths.ts]
 
@@ -59,8 +59,6 @@ const writeStatsJson = argv.indexOf("--stats") !== -1
 const config =
   process.env.NODE_ENV === "production" ? webpackConfigProd : webpackConfigDev
 
-const compiler = webpack(config)
-
 if (process.env.SCRIPTS_BUILD) {
   const copyPublicFolder = () => {
     copySync(paths.public, paths.output, {
@@ -92,6 +90,7 @@ if (process.env.SCRIPTS_BUILD) {
     console.log()
 
     return new Promise((resolve, reject) => {
+      const compiler = webpack(config)
       compiler.run(async (err, stats) => {
         if (err) {
           return reject(err)
@@ -214,52 +213,58 @@ if (process.env.SCRIPTS_BUILD) {
     process.exit(0)
   })()
 } else {
-  const protocol = process.env.HTTPS === "true" ? "https" : "http"
+  ;(async () => {
+    try {
+      const DEFAULT_PORT = parseInt(process.env.PORT as any, 10) || 3000
+      const HOST = process.env.HOST || "0.0.0.0"
 
-  const devServerOptions: Configuration = {
-    // Enable gzip compression of generated files.
-    compress: true,
-    // By default WebpackDevServer serves physical files from current directory
-    // in addition to all the virtual build products that it serves from memory.
-    // This is confusing because those files won’t automatically be available in
-    // production build folder unless we copy them. However, copying the whole
-    // project directory is dangerous because we may expose sensitive files.
-    // Instead, we establish a convention that only files in `public` directory
-    // get served. Our build script will copy `public` into the `build` folder.
-    // In `index.html`, you can get URL of `public` folder with %PUBLIC_URL%:
-    // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    // In JavaScript code, you can access it with `process.env.PUBLIC_URL`.
-    // Note that we only recommend to use `public` folder as an escape hatch
-    // for files like `favicon.ico`, `manifest.json`, and libraries that are
-    // for some reason broken when imported through Webpack. If you just want to
-    // use an image, put it in `src` and `import` it from JavaScript instead.
-    contentBase: paths.public,
-    // By default files from `contentBase` will not trigger a page reload.
-    watchContentBase: true,
-    // Enable hot reloading server. It will provide /sockjs-node/ endpoint
-    // for the WebpackDevServer client so it can learn when the files were
-    // updated. The WebpackDevServer client is included as an entry point
-    // in the Webpack development configuration. Note that only changes
-    // to CSS are currently hot reloaded. JS changes will refresh the browser.
-    hot: true,
-    // It is important to tell WebpackDevServer to use the same "root" path
-    // as we specified in the config. In development, we always serve from /.
-    publicPath: (config.output as webpack.Output).publicPath,
-    // Enable HTTPS if the HTTPS environment variable is set to 'true'
-    https: protocol === "https",
-    host: "0.0.0.0",
-    overlay: true,
-    historyApiFallback: {
-      // Paths with dots should still use the history fallback.
-      // See https://github.com/facebook/create-react-app/issues/387.
-      disableDotRule: true,
-    },
-  }
-  const server = new WebpackDevServer(compiler, devServerOptions)
+      const isInteractive =
+        process.env.NO_INTERACTIVE === "true" ? false : process.stdout.isTTY
 
-  const PORT = parseInt(process.env.PORT as any, 10) || 3000
+      await checkBrowsers(appDirectory)
+      const port = await choosePort("0.0.0.0", DEFAULT_PORT)
+      if (port === null) {
+        // We have not found a port.
+        return
+      }
 
-  server.listen(Number(PORT), "0.0.0.0", () => {
-    console.log(`Starting server on http://localhost:${PORT}`)
-  })
+      const protocol = process.env.HTTPS === "true" ? "https" : "http"
+      const appName = pkg.name
+      const urls = prepareUrls(protocol, HOST, port)
+      const compiler = createCompiler(webpack, config, appName, urls, false)
+
+      // Load proxy config
+      const proxySetting = pkg.proxy
+      const proxyConfig = prepareProxy(proxySetting, paths.public)
+      // Serve webpack assets generated by the compiler over a web server.
+      const serverConfig = createDevServerConfig(
+        proxyConfig,
+        urls.lanUrlForConfig,
+      )
+
+      const devServer = new WebpackDevServer(compiler, serverConfig)
+      // Launch WebpackDevServer.
+      devServer.listen(port, HOST, err => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        if (isInteractive) {
+          clearConsole()
+        }
+        console.log(chalk.cyan("Starting the development server...\n"))
+      })
+      ;["SIGINT", "SIGTERM"].forEach(sig => {
+        process.on(sig as any, () => {
+          devServer.close()
+          process.exit()
+        })
+      })
+    } catch (err) {
+      if (err && err.message) {
+        console.log(err.message)
+      }
+      process.exit(1)
+    }
+  })()
 }
