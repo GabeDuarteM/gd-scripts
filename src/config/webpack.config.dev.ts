@@ -3,7 +3,7 @@ import {
   DefinePlugin,
   HotModuleReplacementPlugin,
 } from "webpack"
-import { join } from "path"
+import { join, resolve } from "path"
 import HtmlWebpackPlugin from "html-webpack-plugin"
 import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin"
 import ManifestPlugin from "webpack-manifest-plugin"
@@ -54,6 +54,9 @@ const config: Configuration = {
     chunkFilename: "static/js/[name].chunk.js",
     // This is the URL that app is served from. We use "/" in development.
     publicPath,
+    // Point sourcemap entries to original disk location (format as URL on Windows)
+    devtoolModuleFilenameTemplate: info =>
+      resolve(info.absoluteResourcePath).replace(/\\/g, "/"),
   },
   optimization: {
     splitChunks: {

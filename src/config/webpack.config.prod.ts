@@ -1,12 +1,9 @@
-import {
-  Configuration,
-  DefinePlugin,
-  HotModuleReplacementPlugin,
-} from "webpack"
-import { join } from "path"
+import { Configuration, DefinePlugin } from "webpack"
+import { join, resolve } from "path"
 import HtmlWebpackPlugin from "html-webpack-plugin"
-import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin"
 import ManifestPlugin from "webpack-manifest-plugin"
+import UglifyJsPlugin from "uglifyjs-webpack-plugin"
+import SWPrecacheWebpackPlugin from "sw-precache-webpack-plugin"
 
 import createBabelConfig from "./babelrc"
 import { hasFile, fromRoot } from "../utils"
@@ -22,6 +19,9 @@ const env = process.env.BABEL_ENV || process.env.NODE_ENV
 const isEnvDevelopment = env === "development"
 const isEnvProduction = env === "production"
 const isEnvTest = env === "test"
+
+const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== "false"
+
 if (!env || (!isEnvDevelopment && !isEnvProduction && !isEnvTest)) {
   throw new Error(
     // eslint-disable-next-line prefer-template
@@ -36,30 +36,75 @@ if (!env || (!isEnvDevelopment && !isEnvProduction && !isEnvTest)) {
 const publicPath = "/"
 
 const config: Configuration = {
-  mode: "development",
-  devtool: "cheap-module-source-map",
-  entry: [
-    `${require.resolve("webpack-dev-server/client")}?/`,
-    require.resolve("webpack/hot/dev-server"),
-    entry,
-  ],
+  mode: "production",
+  // Don't attempt to continue if there are any errors.
+  bail: true,
+  devtool: shouldUseSourceMap ? "source-map" : false,
+  entry,
   output: {
-    // Add /* filename */ comments to generated require()s in the output.
-    pathinfo: true,
-    // This does not produce a real file. It's just the virtual path that is
-    // served by WebpackDevServer in development. This is the JS bundle
-    // containing code from all our entry points, and the Webpack runtime.
-    filename: "static/js/bundle.js",
-    // There are also additional JS chunk files if you use code splitting.
-    chunkFilename: "static/js/[name].chunk.js",
-    // This is the URL that app is served from. We use "/" in development.
+    // The build folder.
+    path: fromRoot("build"),
+    // Generated JS file names (with nested folders).
+    // There will be one main bundle, and one file per asynchronous chunk.
+    // We don't currently advertise code splitting but Webpack supports it.
+    filename: "static/js/[name].[chunkhash:8].js",
+    chunkFilename: "static/js/[name].[chunkhash:8].chunk.js",
+    // We inferred the "public path" (such as / or /my-project) from homepage.
     publicPath,
+    // Point sourcemap entries to original disk location (format as URL on Windows)
+    devtoolModuleFilenameTemplate: info =>
+      resolve(fromRoot("src"), info.absoluteResourcePath).replace(/\\/g, "/"),
   },
   optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          parse: {
+            // we want uglify-js to parse ecma 8 code. However, we don't want it
+            // to apply any minfication steps that turns valid ecma 5 code
+            // into invalid ecma 5 code. This is why the 'compress' and 'output'
+            // sections only apply transformations that are ecma 5 safe
+            // https://github.com/facebook/create-react-app/pull/4234
+            ecma: 8,
+          },
+          compress: {
+            ecma: 5,
+            warnings: false,
+            // Disabled because of an issue with Uglify breaking seemingly valid code:
+            // https://github.com/facebook/create-react-app/issues/2376
+            // Pending further investigation:
+            // https://github.com/mishoo/UglifyJS2/issues/2011
+            comparisons: false,
+          },
+          mangle: {
+            safari10: true,
+          },
+          output: {
+            ecma: 5,
+            comments: false,
+            // Turned on because emoji and regex is not minified properly using default
+            // https://github.com/facebook/create-react-app/issues/2488
+            // eslint-disable-next-line camelcase
+            ascii_only: true,
+          },
+        },
+        // Use multi-process parallel running to improve the build speed
+        // Default number of concurrent runs: os.cpus().length - 1
+        parallel: true,
+        // Enable file caching
+        cache: true,
+        sourceMap: shouldUseSourceMap,
+      }),
+    ],
+    // Automatically split vendor and commons
+    // https://twitter.com/wSokra/status/969633336732905474
+    // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
     splitChunks: {
       chunks: "all",
       name: "vendors",
     },
+    // Keep the runtime chunk seperated to enable long term caching
+    // https://twitter.com/wSokra/status/969679223278505985
     runtimeChunk: true,
   },
   resolve: {
@@ -172,20 +217,57 @@ const config: Configuration = {
     new HtmlWebpackPlugin({
       inject: true,
       template: fromRoot(join("public", "index.html")),
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+      },
     }),
     new DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify(env),
       },
     }),
-    new HotModuleReplacementPlugin(),
-    new CaseSensitivePathsPlugin(),
     // Generate a manifest file which contains a mapping of all asset filenames
     // to their corresponding output file so that tools can pick it up without
     // having to parse `index.html`.
     new ManifestPlugin({
       fileName: "asset-manifest.json",
       publicPath,
+    }),
+    new SWPrecacheWebpackPlugin({
+      // By default, a cache-busting query parameter is appended to requests
+      // used to populate the caches, to ensure the responses are fresh.
+      // If a URL is already hashed by Webpack, then there is no concern
+      // about it being stale, and the cache-busting can be skipped.
+      dontCacheBustUrlsMatching: /\.\w{8}\./,
+      filename: "service-worker.js",
+      logger(message: string) {
+        if (message.indexOf("Total precache size is") === 0) {
+          // This message occurs for every build and is a bit too noisy.
+          return
+        }
+        if (message.indexOf("Skipping static resource") === 0) {
+          // This message obscures real errors so we ignore it.
+          // https://github.com/facebook/create-react-app/issues/2612
+          return
+        }
+        console.log(message)
+      },
+      minify: true,
+      // Don't precache sourcemaps (they're large) and build asset manifest:
+      staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+      // `navigateFallback` and `navigateFallbackWhitelist` are disabled by default; see
+      // https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#service-worker-considerations
+      // navigateFallback: publicUrl + '/index.html',
+      // navigateFallbackWhitelist: [/^(?!\/__).*/],
     }),
   ],
   // Some libraries import Node modules but don't use them in the browser.
