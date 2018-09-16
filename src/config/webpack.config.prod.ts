@@ -1,18 +1,18 @@
-import { Configuration, DefinePlugin } from "webpack"
-import { join, resolve } from "path"
-import HtmlWebpackPlugin from "html-webpack-plugin"
-import ManifestPlugin from "webpack-manifest-plugin"
-import UglifyJsPlugin from "uglifyjs-webpack-plugin"
-import SWPrecacheWebpackPlugin from "sw-precache-webpack-plugin"
+import { Configuration, DefinePlugin } from 'webpack'
+import { join, resolve } from 'path'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import ManifestPlugin from 'webpack-manifest-plugin'
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
+import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin'
 
-import createBabelConfig from "./babelrc"
-import { hasFile, fromRoot } from "../utils"
+import createBabelConfig from './babelrc'
+import { hasFile, fromRoot } from '../utils'
 
-const useBuiltinConfig = !hasFile(".babelrc")
+const useBuiltinConfig = !hasFile('.babelrc')
 
 const getUserBabelConfig = () => {
-  const babelConfig = require(fromRoot(".babelrc"))
-  if (typeof babelConfig === "function") {
+  const babelConfig = require(fromRoot('.babelrc'))
+  if (typeof babelConfig === 'function') {
     return babelConfig()
   }
 
@@ -23,49 +23,49 @@ const babelConfig = useBuiltinConfig
   ? createBabelConfig()
   : getUserBabelConfig()
 
-const entry = hasFile("src", "index.tsx")
-  ? fromRoot(join("src", "index.tsx"))
-  : fromRoot(join("src", "index.js"))
+const entry = hasFile('src', 'index.tsx')
+  ? fromRoot(join('src', 'index.tsx'))
+  : fromRoot(join('src', 'index.js'))
 
 const env = process.env.BABEL_ENV || process.env.NODE_ENV
-const isEnvDevelopment = env === "development"
-const isEnvProduction = env === "production"
-const isEnvTest = env === "test"
+const isEnvDevelopment = env === 'development'
+const isEnvProduction = env === 'production'
+const isEnvTest = env === 'test'
 
-const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== "false"
+const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false'
 
 if (!env || (!isEnvDevelopment && !isEnvProduction && !isEnvTest)) {
   throw new Error(
     // eslint-disable-next-line prefer-template
-    "Using `gd-scripts` requires that you specify `NODE_ENV` or " +
+    'Using `gd-scripts` requires that you specify `NODE_ENV` or ' +
       '`BABEL_ENV` environment variables. Valid values are "development", ' +
       '"test", and "production". Instead, received: ' +
       JSON.stringify(env) +
-      ".",
+      '.',
   )
 }
 
-const publicPath = "/"
+const publicPath = '/'
 
 const config: Configuration = {
-  mode: "production",
+  mode: 'production',
   // Don't attempt to continue if there are any errors.
   bail: true,
-  devtool: shouldUseSourceMap ? "source-map" : false,
+  devtool: shouldUseSourceMap ? 'source-map' : false,
   entry,
   output: {
     // The build folder.
-    path: fromRoot("build"),
+    path: fromRoot('build'),
     // Generated JS file names (with nested folders).
     // There will be one main bundle, and one file per asynchronous chunk.
     // We don't currently advertise code splitting but Webpack supports it.
-    filename: "static/js/[name].[chunkhash:8].js",
-    chunkFilename: "static/js/[name].[chunkhash:8].chunk.js",
+    filename: 'static/js/[name].[chunkhash:8].js',
+    chunkFilename: 'static/js/[name].[chunkhash:8].chunk.js',
     // We inferred the "public path" (such as / or /my-project) from homepage.
     publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
     devtoolModuleFilenameTemplate: info =>
-      resolve(fromRoot("src"), info.absoluteResourcePath).replace(/\\/g, "/"),
+      resolve(fromRoot('src'), info.absoluteResourcePath).replace(/\\/g, '/'),
   },
   optimization: {
     minimizer: [
@@ -112,15 +112,15 @@ const config: Configuration = {
     // https://twitter.com/wSokra/status/969633336732905474
     // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
     splitChunks: {
-      chunks: "all",
-      name: "vendors",
+      chunks: 'all',
+      name: 'vendors',
     },
     // Keep the runtime chunk seperated to enable long term caching
     // https://twitter.com/wSokra/status/969679223278505985
     runtimeChunk: true,
   },
   resolve: {
-    extensions: [".web.js", ".mjs", ".js", ".json", ".web.jsx", ".ts", ".tsx"],
+    extensions: ['.web.js', '.mjs', '.js', '.json', '.web.jsx', '.ts', '.tsx'],
   },
   module: {
     // Makes missing exports an error instead of warning
@@ -138,27 +138,27 @@ const config: Configuration = {
           // A missing `test` is equivalent to a match.
           {
             test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-            loader: require.resolve("url-loader"),
+            loader: require.resolve('url-loader'),
             options: {
               limit: 10000,
-              name: "static/media/[name].[hash:8].[ext]",
+              name: 'static/media/[name].[hash:8].[ext]',
             },
           },
           {
             test: /\.((j|t)sx?|mjs)$/,
-            include: fromRoot("src"),
+            include: fromRoot('src'),
             exclude: [/[/\\\\]node_modules[/\\\\]/],
             use: [
               // This loader parallelizes code compilation, it is optional but
               // improves compile time on larger projects
               {
-                loader: require.resolve("thread-loader"),
+                loader: require.resolve('thread-loader'),
                 options: {
                   poolTimeout: Infinity, // keep workers alive for more effective watch mode
                 },
               },
               {
-                loader: require.resolve("babel-loader"),
+                loader: require.resolve('babel-loader'),
                 options: {
                   ...babelConfig,
                   cacheDirectory: true,
@@ -173,17 +173,17 @@ const config: Configuration = {
             test: /\.js$/,
             use: [
               {
-                loader: require.resolve("babel-loader"),
+                loader: require.resolve('babel-loader'),
                 options: {
                   babelrc: false,
                   compact: false,
                   presets: [
                     isEnvTest && [
                       // ES features necessary for user's Node version
-                      require("@babel/preset-env").default,
+                      require('@babel/preset-env').default,
                       {
                         targets: {
-                          node: "current",
+                          node: 'current',
                         },
                         // Do not transform modules to CJS
                         modules: false,
@@ -191,7 +191,7 @@ const config: Configuration = {
                     ],
                     (isEnvProduction || isEnvDevelopment) && [
                       // Latest stable ECMAScript features
-                      require("@babel/preset-env").default,
+                      require('@babel/preset-env').default,
                       {
                         // Do not transform modules to CJS
                         modules: false,
@@ -215,9 +215,9 @@ const config: Configuration = {
             // Also exclude `html` and `json` extensions so they get processed
             // by webpacks internal loaders.
             exclude: [/\.((j|t)sx?|mjs)$/, /\.html$/, /\.json$/],
-            loader: require.resolve("file-loader"),
+            loader: require.resolve('file-loader'),
             options: {
-              name: "static/media/[name].[hash:8].[ext]",
+              name: 'static/media/[name].[hash:8].[ext]',
             },
           },
         ],
@@ -228,7 +228,7 @@ const config: Configuration = {
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
-      template: fromRoot(join("public", "index.html")),
+      template: fromRoot(join('public', 'index.html')),
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -243,7 +243,7 @@ const config: Configuration = {
       },
     }),
     new DefinePlugin({
-      "process.env": {
+      'process.env': {
         NODE_ENV: JSON.stringify(env),
       },
     }),
@@ -251,7 +251,7 @@ const config: Configuration = {
     // to their corresponding output file so that tools can pick it up without
     // having to parse `index.html`.
     new ManifestPlugin({
-      fileName: "asset-manifest.json",
+      fileName: 'asset-manifest.json',
       publicPath,
     }),
     new SWPrecacheWebpackPlugin({
@@ -260,13 +260,13 @@ const config: Configuration = {
       // If a URL is already hashed by Webpack, then there is no concern
       // about it being stale, and the cache-busting can be skipped.
       dontCacheBustUrlsMatching: /\.\w{8}\./,
-      filename: "service-worker.js",
+      filename: 'service-worker.js',
       logger(message: string) {
-        if (message.indexOf("Total precache size is") === 0) {
+        if (message.indexOf('Total precache size is') === 0) {
           // This message occurs for every build and is a bit too noisy.
           return
         }
-        if (message.indexOf("Skipping static resource") === 0) {
+        if (message.indexOf('Skipping static resource') === 0) {
           // This message obscures real errors so we ignore it.
           // https://github.com/facebook/create-react-app/issues/2612
           return
@@ -285,12 +285,12 @@ const config: Configuration = {
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
   node: {
-    dgram: "empty",
-    fs: "empty",
-    net: "empty",
-    tls: "empty",
+    dgram: 'empty',
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
     // eslint-disable-next-line camelcase
-    child_process: "empty",
+    child_process: 'empty',
   },
 }
 

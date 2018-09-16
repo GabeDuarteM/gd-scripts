@@ -1,31 +1,31 @@
-import webpack, { Stats } from "webpack"
-import WebpackDevServer from "webpack-dev-server"
-import { join } from "path"
-import { emptyDirSync, copySync, writeFile } from "fs-extra"
-import chalk from "chalk"
-import formatWebpackMessages from "react-dev-utils/formatWebpackMessages"
-import printHostingInstructions from "react-dev-utils/printHostingInstructions"
-import FileSizeReporter from "react-dev-utils/FileSizeReporter"
-import printBuildError from "react-dev-utils/printBuildError"
-import { printBrowsers, checkBrowsers } from "react-dev-utils/browsersHelper"
+import webpack, { Stats } from 'webpack'
+import WebpackDevServer from 'webpack-dev-server'
+import { join } from 'path'
+import { emptyDirSync, copySync, writeFile } from 'fs-extra'
+import chalk from 'chalk'
+import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages'
+import printHostingInstructions from 'react-dev-utils/printHostingInstructions'
+import FileSizeReporter from 'react-dev-utils/FileSizeReporter'
+import printBuildError from 'react-dev-utils/printBuildError'
+import { printBrowsers, checkBrowsers } from 'react-dev-utils/browsersHelper'
 import {
   choosePort,
   createCompiler,
   prepareProxy,
   prepareUrls,
-} from "react-dev-utils/WebpackDevServerUtils"
-import clearConsole from "react-dev-utils/clearConsole"
+} from 'react-dev-utils/WebpackDevServerUtils'
+import clearConsole from 'react-dev-utils/clearConsole'
 
-import webpackConfigDev from "../../config/webpack.config.dev"
-import webpackConfigProd from "../../config/webpack.config.prod"
-import createDevServerConfig from "../../config/webpackDevServer.config"
+import webpackConfigDev from '../../config/webpack.config.dev'
+import webpackConfigProd from '../../config/webpack.config.prod'
+import createDevServerConfig from '../../config/webpackDevServer.config'
 import {
   checkRequiredFiles,
   RequiredFilesFailed,
   pkg,
   appDirectory,
-} from "../../utils"
-import paths from "../../paths"
+} from '../../utils'
+import paths from '../../paths'
 
 const files = [paths.html, paths.js, paths.ts]
 
@@ -36,9 +36,9 @@ const failedCheckedFiles = checkedFiles.filter(
 
 if (failedCheckedFiles) {
   let shouldFail = false
-  const failedHtml = failedCheckedFiles.find(x => x.fileName === "index.html")
-  const failedJs = failedCheckedFiles.find(x => x.fileName === "index.js")
-  const failedTs = failedCheckedFiles.find(x => x.fileName === "index.tsx")
+  const failedHtml = failedCheckedFiles.find(x => x.fileName === 'index.html')
+  const failedJs = failedCheckedFiles.find(x => x.fileName === 'index.js')
+  const failedTs = failedCheckedFiles.find(x => x.fileName === 'index.tsx')
 
   if (failedHtml || (failedJs && failedTs)) {
     const failMessage = failedHtml
@@ -54,10 +54,10 @@ if (failedCheckedFiles) {
 }
 // Process CLI arguments
 const argv = process.argv.slice(2)
-const writeStatsJson = argv.indexOf("--stats") !== -1
+const writeStatsJson = argv.indexOf('--stats') !== -1
 
 const config =
-  process.env.NODE_ENV === "production" ? webpackConfigProd : webpackConfigDev
+  process.env.NODE_ENV === 'production' ? webpackConfigProd : webpackConfigDev
 
 if (process.env.SCRIPTS_BUILD) {
   const copyPublicFolder = () => {
@@ -74,7 +74,7 @@ if (process.env.SCRIPTS_BUILD) {
 
   const createBundleStats = (bundleStats: string) =>
     new Promise((resolve, reject) => {
-      writeFile(join(paths.output, "bundle-stats.json"), bundleStats, err => {
+      writeFile(join(paths.output, 'bundle-stats.json'), bundleStats, err => {
         if (err) {
           reject(err)
           return
@@ -86,7 +86,7 @@ if (process.env.SCRIPTS_BUILD) {
     })
 
   const build = (): Promise<BuildReturn> => {
-    console.log("Creating an optimized production build...")
+    console.log('Creating an optimized production build...')
     console.log()
 
     return new Promise((resolve, reject) => {
@@ -103,22 +103,22 @@ if (process.env.SCRIPTS_BUILD) {
           if (messages.errors.length > 1) {
             messages.errors.length = 1
           }
-          return reject(new Error(messages.errors.join("\n\n")))
+          return reject(new Error(messages.errors.join('\n\n')))
         }
 
         if (
           process.env.CI &&
-          (typeof process.env.CI !== "string" ||
-            process.env.CI.toLowerCase() !== "false") &&
+          (typeof process.env.CI !== 'string' ||
+            process.env.CI.toLowerCase() !== 'false') &&
           messages.warnings.length
         ) {
           console.log(
             chalk.yellow(
-              "\nTreating warnings as errors because process.env.CI = true.\n" +
-                "Most CI servers set it automatically.\n",
+              '\nTreating warnings as errors because process.env.CI = true.\n' +
+                'Most CI servers set it automatically.\n',
             ),
           )
-          return reject(new Error(messages.warnings.join("\n\n")))
+          return reject(new Error(messages.warnings.join('\n\n')))
         }
 
         const resolveArgs = {
@@ -157,25 +157,25 @@ if (process.env.SCRIPTS_BUILD) {
       const { stats, warnings } = await build()
       try {
         if (warnings.length) {
-          console.log(chalk.yellow("Compiled with warnings.\n"))
-          console.log(warnings.join("\n\n"))
+          console.log(chalk.yellow('Compiled with warnings.\n'))
+          console.log(warnings.join('\n\n'))
           console.log(
             // eslint-disable-next-line prefer-template
-            "\nSearch for the " +
-              chalk.underline(chalk.yellow("keywords")) +
-              " to learn more about each warning.",
+            '\nSearch for the ' +
+              chalk.underline(chalk.yellow('keywords')) +
+              ' to learn more about each warning.',
           )
           console.log(
             // eslint-disable-next-line prefer-template
-            "To ignore, add " +
-              chalk.cyan("// eslint-disable-next-line") +
-              " to the line before.\n",
+            'To ignore, add ' +
+              chalk.cyan('// eslint-disable-next-line') +
+              ' to the line before.\n',
           )
         } else {
-          console.log(chalk.green("Compiled successfully.\n"))
+          console.log(chalk.green('Compiled successfully.\n'))
         }
 
-        console.log("File sizes after gzip:\n")
+        console.log('File sizes after gzip:\n')
         printFileSizesAfterBuild(
           stats,
           previousFileSizes,
@@ -186,7 +186,7 @@ if (process.env.SCRIPTS_BUILD) {
         console.log()
 
         const appPackage = pkg
-        const publicUrl = "/"
+        const publicUrl = '/'
         const publicPath = (config.output as webpack.Output).publicPath
         const buildFolder = paths.output
         printHostingInstructions(
@@ -198,7 +198,7 @@ if (process.env.SCRIPTS_BUILD) {
         )
         printBrowsers(appDirectory)
       } catch (err) {
-        console.log(chalk.red("Failed to compile.\n"))
+        console.log(chalk.red('Failed to compile.\n'))
         printBuildError(err)
         process.exit(1)
         return
@@ -216,19 +216,19 @@ if (process.env.SCRIPTS_BUILD) {
   ;(async () => {
     try {
       const DEFAULT_PORT = parseInt(process.env.PORT as any, 10) || 3000
-      const HOST = process.env.HOST || "0.0.0.0"
+      const HOST = process.env.HOST || '0.0.0.0'
 
       const isInteractive =
-        process.env.NO_INTERACTIVE === "true" ? false : process.stdout.isTTY
+        process.env.NO_INTERACTIVE === 'true' ? false : process.stdout.isTTY
 
       await checkBrowsers(appDirectory)
-      const port = await choosePort("0.0.0.0", DEFAULT_PORT)
+      const port = await choosePort('0.0.0.0', DEFAULT_PORT)
       if (port === null) {
         // We have not found a port.
         return
       }
 
-      const protocol = process.env.HTTPS === "true" ? "https" : "http"
+      const protocol = process.env.HTTPS === 'true' ? 'https' : 'http'
       const appName = pkg.name
       const urls = prepareUrls(protocol, HOST, port)
       const compiler = createCompiler(webpack, config, appName, urls, false)
@@ -252,9 +252,9 @@ if (process.env.SCRIPTS_BUILD) {
         if (isInteractive) {
           clearConsole()
         }
-        console.log(chalk.cyan("Starting the development server...\n"))
+        console.log(chalk.cyan('Starting the development server...\n'))
       })
-      ;["SIGINT", "SIGTERM"].forEach(sig => {
+      ;['SIGINT', 'SIGTERM'].forEach(sig => {
         process.on(sig as any, () => {
           devServer.close()
           process.exit()

@@ -1,1 +1,1 @@
-declare module "react-dev-utils/*"
+declare module 'react-dev-utils/*'

@@ -1,4 +1,4 @@
-import { Package } from "read-pkg-up"
+import { Package } from 'read-pkg-up'
 
 interface Options {
   executable?: string

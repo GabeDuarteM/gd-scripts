@@ -1,1 +1,1 @@
-module.exports = require("./build/config/eslintrc.web")
+module.exports = require('./build/config/eslintrc.web')

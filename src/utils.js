@@ -67,9 +67,9 @@ const hasPkgProp = props => arrify(props).some(prop => has(pkg, prop))
 const hasPkgSubProp = pkgProp => props =>
   hasPkgProp(arrify(props).map(p => `${pkgProp}.${p}`))
 
-const hasPeerDep = hasPkgSubProp("peerDependencies")
-const hasDep = hasPkgSubProp("dependencies")
-const hasDevDep = hasPkgSubProp("devDependencies")
+const hasPeerDep = hasPkgSubProp('peerDependencies')
+const hasDep = hasPkgSubProp('dependencies')
+const hasDevDep = hasPkgSubProp('devDependencies')
 const hasAnyDep = args => [hasDep, hasDevDep, hasPeerDep].some(fn => fn(args))
 
 const ifAnyDep = (deps, ifTrue, ifFalse) =>
@@ -78,7 +78,7 @@ const ifAnyDep = (deps, ifTrue, ifFalse) =>
 const envIsSet = name =>
   process.env.hasOwnProperty(name) &&
   process.env[name] &&
-  process.env[name] !== "undefined"
+  process.env[name] !== 'undefined'
 
 const parseEnv = (name, defaultValue) => {
   if (envIsSet(name)) {
@@ -137,9 +137,9 @@ const checkRequiredFiles = (...files) => {
     }
   } catch (err) {
     const message = `
-${chalk.red("Could not find a required file.")}
-${chalk.red("  Name: ") + chalk.cyan(currentFileName)}
-${chalk.red("  Searched in: ") + chalk.cyan(currentDirName)}
+${chalk.red('Could not find a required file.')}
+${chalk.red('  Name: ') + chalk.cyan(currentFileName)}
+${chalk.red('  Searched in: ') + chalk.cyan(currentDirName)}
     `.trim()
     return {
       success: false,
