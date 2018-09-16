@@ -30,10 +30,11 @@
     "dist",
     "babel.js",
     "eslint.js",
-    "eslint-web.js",
+    "eslint.web.js",
     "prettier.js",
     "semver.js",
-    "typescript.json"
+    "typescript.json",
+    "typescript.web.json"
   ],
   "repository": {
     "type": "git",
