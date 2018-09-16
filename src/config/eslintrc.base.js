@@ -12,7 +12,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       node: {
-        extensions: ['.mjs', '.js', '.json', 'ts'],
+        extensions: ['.mjs', '.js', '.json', '.ts'],
       },
     },
     'import/extensions': ['.js', '.mjs', '.ts'],

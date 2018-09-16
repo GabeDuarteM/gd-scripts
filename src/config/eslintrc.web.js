@@ -13,6 +13,16 @@ const config = {
   },
   settings: {
     ...baseConfig.settings,
+    "import/resolver": {
+      ...baseConfig.settings["import/resolver"],
+      node: {
+        extensions: [
+          ...baseConfig.settings["import/resolver"].node.extensions,
+          ".tsx",
+        ],
+      },
+    },
+    "import/extensions": [...baseConfig.settings["import/extensions"], ".tsx"],
     react: {
       pragma: "React",
       version: "16.0",
