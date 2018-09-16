@@ -11,7 +11,7 @@ const useBuiltInBabelConfig = !hasFile('.babelrc') && !hasPkgProp('babel')
 const jestConfig = {
   testEnvironment: 'node',
   moduleFileExtensions: ['js', 'json', 'ts', 'tsx'],
-  collectCoverageFrom: ['src/**/*.+(js|tsx?)'],
+  collectCoverageFrom: ['src/**/*.(js|ts|tsx)'],
   testMatch,
   testPathIgnorePatterns: [...testIgnores],
   coveragePathIgnorePatterns: [...testIgnores, 'src/(umd|cjs|esm)-entry.js$'],
