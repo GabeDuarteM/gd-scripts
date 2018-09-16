@@ -1,5 +1,5 @@
-import spawn from "cross-spawn"
-import chalk from "chalk"
+import spawn from 'cross-spawn'
+import chalk from 'chalk'
 
 import {
   hasTests,
@@ -7,24 +7,24 @@ import {
   resolveBin,
   logScriptMessage,
   hasFile,
-} from "../utils"
+} from '../utils'
 
-process.env.SCRIPT_CI = "true"
+process.env.SCRIPT_CI = 'true'
 
 const unnecessaryArgumentsCount = 2
 
 const args = process.argv.slice(unnecessaryArgumentsCount)
 
 const gdScripts = isGdScripts()
-const executor = gdScripts ? "ts-node" : "gd-scripts"
+const executor = gdScripts ? 'ts-node' : 'gd-scripts'
 const getArgsSpawn = (script: string) =>
-  gdScripts ? ["src", script, ...args] : [script, ...args]
-const isTypescript = hasFile("tsconfig.json")
+  gdScripts ? ['src', script, ...args] : [script, ...args]
+const isTypescript = hasFile('tsconfig.json')
 
-logScriptMessage("CI")
+logScriptMessage('CI')
 
-const resultLint = spawn.sync(resolveBin(executor), [...getArgsSpawn("lint")], {
-  stdio: "inherit",
+const resultLint = spawn.sync(resolveBin(executor), [...getArgsSpawn('lint')], {
+  stdio: 'inherit',
 })
 
 const packageHasTests = hasTests()
@@ -33,22 +33,22 @@ let resultTest = { status: 0 }
 if (isTypescript) {
   resultTypecheck = spawn.sync(
     resolveBin(executor),
-    [...getArgsSpawn("typecheck")],
+    [...getArgsSpawn('typecheck')],
     {
-      stdio: "inherit",
+      stdio: 'inherit',
     },
   )
 }
 if (packageHasTests) {
-  resultTest = spawn.sync(resolveBin(executor), [...getArgsSpawn("test")], {
-    stdio: "inherit",
+  resultTest = spawn.sync(resolveBin(executor), [...getArgsSpawn('test')], {
+    stdio: 'inherit',
   })
 }
 const resultBuild = spawn.sync(
   resolveBin(executor),
-  [...getArgsSpawn("build")],
+  [...getArgsSpawn('build')],
   {
-    stdio: "inherit",
+    stdio: 'inherit',
   },
 )
 
@@ -61,23 +61,23 @@ const finalResult = [
   ? 1
   : 0
 
-console.log(`\n${chalk.cyan("CI RESULTS:")}`)
+console.log(`\n${chalk.cyan('CI RESULTS:')}`)
 
 const logStatus = (script: string, status: number) => {
   console.log(
-    `${script}${status === 0 ? chalk.green("SUCCESS") : chalk.red("ERROR")}`,
+    `${script}${status === 0 ? chalk.green('SUCCESS') : chalk.red('ERROR')}`,
   )
 }
 
 console.log()
-logStatus("Lint\t   ", resultLint.status)
+logStatus('Lint\t   ', resultLint.status)
 if (isTypescript) {
-  logStatus("Typecheck  ", resultTypecheck.status)
+  logStatus('Typecheck  ', resultTypecheck.status)
 }
 if (packageHasTests) {
-  logStatus("Test\t   ", resultTest.status)
+  logStatus('Test\t   ', resultTest.status)
 }
-logStatus("Build\t   ", resultBuild.status)
+logStatus('Build\t   ', resultBuild.status)
 console.log()
 
 process.exit(finalResult)

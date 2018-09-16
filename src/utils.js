@@ -1,22 +1,22 @@
 // @ts-check
 
-const fs = require("fs")
-const path = require("path")
-const arrify = require("arrify")
-const has = require("lodash.has")
-const readPkgUp = require("read-pkg-up")
-const which = require("which")
-const glob = require("glob")
-const chalk = require("chalk").default
+const fs = require('fs')
+const path = require('path')
+const arrify = require('arrify')
+const has = require('lodash.has')
+const readPkgUp = require('read-pkg-up')
+const which = require('which')
+const glob = require('glob')
+const chalk = require('chalk').default
 
-const { testMatch, testIgnores } = require("./config/jest.patterns")
+const { testMatch, testIgnores } = require('./config/jest.patterns')
 
 const { pkg, path: pkgPath } = readPkgUp.sync({
   cwd: fs.realpathSync(process.cwd()),
 })
 const appDirectory = path.dirname(pkgPath)
 
-const isGdScripts = () => pkg.name === "gd-scripts"
+const isGdScripts = () => pkg.name === 'gd-scripts'
 
 /**
  * @param {string} modName
@@ -36,12 +36,12 @@ const resolveBin = (
     const modPkgPath = require.resolve(`${modName}/package.json`)
     const modPkgDir = path.dirname(modPkgPath)
     const { bin } = require(modPkgPath)
-    const binPath = typeof bin === "string" ? bin : bin[executable]
+    const binPath = typeof bin === 'string' ? bin : bin[executable]
     const fullPathToBin = path.join(modPkgDir, binPath)
     if (fullPathToBin === pathFromWhich) {
       return executable
     }
-    return fullPathToBin.replace(cwd, ".")
+    return fullPathToBin.replace(cwd, '.')
   } catch (error) {
     if (pathFromWhich) {
       return executable
@@ -65,9 +65,9 @@ const hasFile = (...p) => fs.existsSync(fromRoot(...p))
 const hasPkgProp = props => arrify(props).some(prop => has(pkg, prop))
 
 const hasTests = () => {
-  const testPatterns = testMatch.join(",")
+  const testPatterns = testMatch.join(',')
   const ignorePatterns = testIgnores.map(
-    x => `${x}${x.endsWith("/") ? "" : "/"}**/*`,
+    x => `${x}${x.endsWith('/') ? '' : '/'}**/*`,
   )
   const globStr = `{${testPatterns}}`
   const testList = glob.sync(globStr, {
@@ -81,7 +81,7 @@ const hasTests = () => {
  * @param {string} message
  */
 const logMessage = message => {
-  console.log(`${chalk.bgCyan(chalk.black("[gd-scripts]"))} ${message}\n`)
+  console.log(`${chalk.bgCyan(chalk.black('[gd-scripts]'))} ${message}\n`)
 }
 
 /**

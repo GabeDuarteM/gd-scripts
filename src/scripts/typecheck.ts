@@ -1,13 +1,13 @@
-import spawn from "cross-spawn"
-import { resolveBin, logScriptMessage } from "../utils"
+import spawn from 'cross-spawn'
+import { resolveBin, logScriptMessage } from '../utils'
 
-logScriptMessage("TYPECHECK")
+logScriptMessage('TYPECHECK')
 
 const result = spawn.sync(
-  resolveBin("typescript", { executable: "tsc" }),
-  ["--noEmit"],
+  resolveBin('typescript', { executable: 'tsc' }),
+  ['--noEmit'],
   {
-    stdio: "inherit",
+    stdio: 'inherit',
   },
 )
 

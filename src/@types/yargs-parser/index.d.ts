@@ -1,1 +1,1 @@
-declare module "yargs-parser"
+declare module 'yargs-parser'

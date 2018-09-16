@@ -1,7 +1,7 @@
-import { logScriptMessage } from "../utils"
+import { logScriptMessage } from '../utils'
 
-process.env.SCRIPT_WATCH = "true"
+process.env.SCRIPT_WATCH = 'true'
 
-logScriptMessage("START")
+logScriptMessage('START')
 
-require("./build")
+require('./build')

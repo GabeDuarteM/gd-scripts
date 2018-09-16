@@ -1,53 +1,53 @@
-import path from "path"
-import spawn from "cross-spawn"
-import rimraf from "rimraf"
+import path from 'path'
+import spawn from 'cross-spawn'
+import rimraf from 'rimraf'
 import {
   hasPkgProp,
   fromRoot,
   resolveBin,
   hasFile,
   logScriptMessage,
-} from "../utils"
-import paths from "../paths"
+} from '../utils'
+import paths from '../paths'
 
 const unnecessaryArgumentsCount = 2
 
 const args = process.argv.slice(unnecessaryArgumentsCount)
 const here = (p: string) => path.join(__dirname, p)
 
-const isWatching = process.env.SCRIPT_WATCH === "true"
+const isWatching = process.env.SCRIPT_WATCH === 'true'
 
 const useBuiltinConfig =
-  !args.includes("--presets") && !hasFile(".babelrc") && !hasPkgProp("babel")
+  !args.includes('--presets') && !hasFile('.babelrc') && !hasPkgProp('babel')
 const config = useBuiltinConfig
-  ? ["--presets", here("../config/babelrc.js")]
+  ? ['--presets', here('../config/babelrc.js')]
   : []
 
-const ignore = args.includes("--ignore")
+const ignore = args.includes('--ignore')
   ? []
-  : ["--ignore", "**/*.test.js,**/*.test.ts,**/*.d.ts,__mocks__,@types"]
+  : ['--ignore', '**/*.test.js,**/*.test.ts,**/*.d.ts,__mocks__,@types']
 
-const copyFiles = args.includes("--no-copy-files") ? [] : ["--copy-files"]
+const copyFiles = args.includes('--no-copy-files') ? [] : ['--copy-files']
 
-const isTypescript = hasFile("tsconfig.json")
+const isTypescript = hasFile('tsconfig.json')
 
-const useSpecifiedOutDir = args.includes("--out-dir")
-const outDir = useSpecifiedOutDir ? [] : ["--out-dir", paths.output]
+const useSpecifiedOutDir = args.includes('--out-dir')
+const outDir = useSpecifiedOutDir ? [] : ['--out-dir', paths.output]
 
-const extensions = ["--extensions", ".ts,.js"]
+const extensions = ['--extensions', '.ts,.js']
 
-const sourceMaps = isWatching ? [] : ["-s"]
+const sourceMaps = isWatching ? [] : ['-s']
 
-const watch = isWatching ? ["-w"] : []
+const watch = isWatching ? ['-w'] : []
 
 if (!isWatching) {
-  logScriptMessage("BUILD")
+  logScriptMessage('BUILD')
 }
 
-if (!useSpecifiedOutDir && !args.includes("--no-clean")) {
+if (!useSpecifiedOutDir && !args.includes('--no-clean')) {
   rimraf.sync(fromRoot(paths.output))
   // eslint-disable-next-line no-console
-  console.log("Cleaned the build dir.")
+  console.log('Cleaned the build dir.')
 }
 
 const babelArguments = [
@@ -56,34 +56,34 @@ const babelArguments = [
   ...ignore,
   ...config,
   ...extensions,
-  "src",
+  'src',
   ...sourceMaps,
   ...watch,
   ...args,
 ]
 
 const resultBabel = spawn.sync(
-  resolveBin("babel-cli", { executable: "babel" }),
+  resolveBin('babel-cli', { executable: 'babel' }),
   babelArguments,
-  { stdio: "inherit" },
+  { stdio: 'inherit' },
 )
 
 if (isTypescript && !isWatching) {
   spawn.sync(
-    resolveBin("typescript", { executable: "tsc" }),
-    ["--emitDeclarationOnly"],
-    { stdio: "inherit" },
+    resolveBin('typescript', { executable: 'tsc' }),
+    ['--emitDeclarationOnly'],
+    { stdio: 'inherit' },
   )
-  console.log("Typescript declarations emitted.")
+  console.log('Typescript declarations emitted.')
 }
 
 // Exclude ignored files from the build dir
 if (ignore.length > 0 && !isWatching) {
   const buildIgnore = ignore[1]
-    .split(",")
-    .filter(x => x !== "**/*.d.ts") // Do not exclude type definitions
+    .split(',')
+    .filter(x => x !== '**/*.d.ts') // Do not exclude type definitions
     .map(x => `build/${x}`)
-    .join(",")
+    .join(',')
 
   rimraf.sync(`{${buildIgnore}}`)
 }

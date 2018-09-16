@@ -1,38 +1,38 @@
-import path from "path"
-import spawn from "cross-spawn"
-import yargsParser from "yargs-parser"
+import path from 'path'
+import spawn from 'cross-spawn'
+import yargsParser from 'yargs-parser'
 
-import { hasPkgProp, resolveBin, hasFile, logScriptMessage } from "../utils"
+import { hasPkgProp, resolveBin, hasFile, logScriptMessage } from '../utils'
 
 const unnecessaryArgumentsCount = 2
 
 let args = process.argv.slice(unnecessaryArgumentsCount)
 const here = (p: string) => path.join(__dirname, p)
-const hereRelative = (p: string) => here(p).replace(process.cwd(), ".")
+const hereRelative = (p: string) => here(p).replace(process.cwd(), '.')
 const parsedArgs = yargsParser(args)
 
 const useBuiltinConfig =
-  !args.includes("--config") &&
-  !hasFile(".eslintrc") &&
-  !hasFile(".eslintrc.js") &&
-  !hasPkgProp("eslintConfig")
+  !args.includes('--config') &&
+  !hasFile('.eslintrc') &&
+  !hasFile('.eslintrc.js') &&
+  !hasPkgProp('eslintConfig')
 
 const config = useBuiltinConfig
-  ? ["--config", hereRelative("../config/eslintrc.js")]
+  ? ['--config', hereRelative('../config/eslintrc.js')]
   : []
 
-const cache = args.includes("--no-cache") ? [] : ["--cache"]
+const cache = args.includes('--no-cache') ? [] : ['--cache']
 
 const filesGiven = parsedArgs._.length > 0
 
-const filesToApply = filesGiven ? [] : ["."]
+const filesToApply = filesGiven ? [] : ['.']
 
-const extensions = ["--ext", ".js,.ts"]
+const extensions = ['--ext', '.js,.ts']
 
-const cacheLocation = ["--cache-location", "node_modules/.cache/.eslintcache"]
+const cacheLocation = ['--cache-location', 'node_modules/.cache/.eslintcache']
 
 const isLintable = (file: string) =>
-  file.endsWith(".js") || file.endsWith(".ts")
+  file.endsWith('.js') || file.endsWith('.ts')
 
 if (filesGiven) {
   // we need to take all the flag-less arguments (the files that should be linted)
@@ -50,10 +50,10 @@ const lintArguments = [
   ...filesToApply,
 ]
 
-logScriptMessage("LINT")
+logScriptMessage('LINT')
 
-const result = spawn.sync(resolveBin("eslint"), lintArguments, {
-  stdio: "inherit",
+const result = spawn.sync(resolveBin('eslint'), lintArguments, {
+  stdio: 'inherit',
 })
 
 process.exit(result.status)

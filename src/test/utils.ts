@@ -1,12 +1,12 @@
-import { pathExistsSync } from "fs-extra"
-import git from "simple-git"
-import spawn from "cross-spawn"
-import { join } from "path"
-import { tmpdir } from "os"
+import { pathExistsSync } from 'fs-extra'
+import git from 'simple-git'
+import spawn from 'cross-spawn'
+import { join } from 'path'
+import { tmpdir } from 'os'
 
-import { fromRoot } from "../utils"
+import { fromRoot } from '../utils'
 
-const fixturePath = join(tmpdir(), "gd-scripts", "fixtures")
+const fixturePath = join(tmpdir(), 'gd-scripts', 'fixtures')
 
 export const getRepoName = (repo: string) => {
   const rgxRepoName = /.*github.com\/.*?\/(.*?).git/
@@ -14,7 +14,7 @@ export const getRepoName = (repo: string) => {
   const match = rgxRepoName.exec(repo)
 
   if (!match) {
-    throw new Error("Repo name not found.")
+    throw new Error('Repo name not found.')
   }
 
   const repoName = match[1]
@@ -55,19 +55,19 @@ export const cloneOrPull = async (repo: string) => {
 }
 
 export const runYarnInstall = (repo: string) =>
-  spawn.sync("yarn", ["install"], {
-    stdio: "inherit",
+  spawn.sync('yarn', ['install'], {
+    stdio: 'inherit',
     cwd: getFixtureRepoPath(repo),
   })
 
 export const runYarnCi = (repo: string) =>
-  spawn.sync("yarn", ["ci"], {
-    stdio: "inherit",
+  spawn.sync('yarn', ['ci'], {
+    stdio: 'inherit',
     cwd: getFixtureRepoPath(repo),
   })
 
 export const runYarnAddGdScripts = (repo: string) =>
-  spawn.sync("yarn", ["add", `file:${fromRoot(".")}`, "-D"], {
-    stdio: "inherit",
+  spawn.sync('yarn', ['add', `file:${fromRoot('.')}`, '-D'], {
+    stdio: 'inherit',
     cwd: getFixtureRepoPath(repo),
   })

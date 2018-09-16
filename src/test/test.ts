@@ -1,25 +1,25 @@
-import { ensureDirSync } from "fs-extra"
+import { ensureDirSync } from 'fs-extra'
 
-import { tmpdir } from "os"
-import { join } from "path"
+import { tmpdir } from 'os'
+import { join } from 'path'
 
-import chalk from "chalk"
+import chalk from 'chalk'
 
 import {
   cloneOrPull,
   getRepoName,
   runYarnCi,
   runYarnAddGdScripts,
-} from "./utils"
-import { logMessage } from "../utils"
+} from './utils'
+import { logMessage } from '../utils'
 
-ensureDirSync(join(tmpdir(), "gd-scripts", "fixtures"))
+ensureDirSync(join(tmpdir(), 'gd-scripts', 'fixtures'))
 
 const repos = [
-  "https://github.com/GabrielDuarteM/youtube-autoclose-ads.git",
-  "https://github.com/GabrielDuarteM/copy-paste-component.git",
-  "https://github.com/GabrielDuarteM/copy-paste-component-vscode.git",
-  "https://github.com/GabrielDuarteM/pipe-now.git",
+  'https://github.com/GabrielDuarteM/youtube-autoclose-ads.git',
+  'https://github.com/GabrielDuarteM/copy-paste-component.git',
+  'https://github.com/GabrielDuarteM/copy-paste-component-vscode.git',
+  'https://github.com/GabrielDuarteM/pipe-now.git',
 ]
 
 const statuses: number[] = []
@@ -49,8 +49,8 @@ const runFuncOnEveryRepo = async (
 
 const logStatus = (repoName: string, status: number, spaceLength: number) => {
   console.log(
-    `${repoName}${" ".repeat(spaceLength)}${
-      status === 0 ? chalk.green("SUCCESS") : chalk.red("ERROR")
+    `${repoName}${' '.repeat(spaceLength)}${
+      status === 0 ? chalk.green('SUCCESS') : chalk.red('ERROR')
     }`,
   )
 }
@@ -60,19 +60,19 @@ const test = async () => {
   let currStep = 0
   await runFuncOnEveryRepo(
     cloneOrPull,
-    "Cloning repo",
+    'Cloning repo',
     (currStep += 1),
     totalSteps,
   )
   await runFuncOnEveryRepo(
     runYarnAddGdScripts,
-    "Installing the new version of gd-scripts",
+    'Installing the new version of gd-scripts',
     (currStep += 1),
     totalSteps,
   )
   await runFuncOnEveryRepo(
     runYarnCi,
-    "Running CI Script",
+    'Running CI Script',
     (currStep += 1),
     totalSteps,
     (result: any) => {
@@ -93,7 +93,7 @@ const test = async () => {
     0,
   )
 
-  console.log(`\n${chalk.cyan("TEST RESULTS:")}`)
+  console.log(`\n${chalk.cyan('TEST RESULTS:')}`)
 
   console.log()
   results.forEach(result => {

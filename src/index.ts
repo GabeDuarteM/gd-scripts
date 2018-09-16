@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-import get from "lodash.get"
-import { logMessage } from "./utils"
+import get from 'lodash.get'
+import { logMessage } from './utils'
 
 const pkg = require(`${process.cwd()}/package.json`)
 
-const babelCoreBridgeVersion = "^7.0.0-bridge.0"
+const babelCoreBridgeVersion = '^7.0.0-bridge.0'
 
-const babelCoreDevDep = get(pkg, "devDependencies.babel-core")
-const babelCoreDep = get(pkg, "dependencies.babel-core")
-const babelCoreResolutions = get(pkg, "resolutions.babel-core")
+const babelCoreDevDep = get(pkg, 'devDependencies.babel-core')
+const babelCoreDep = get(pkg, 'dependencies.babel-core')
+const babelCoreResolutions = get(pkg, 'resolutions.babel-core')
 
 if (
   (!babelCoreDevDep && !babelCoreDep && !babelCoreResolutions) ||
@@ -21,4 +21,4 @@ if (
   )
 }
 
-require("./run-script")
+require('./run-script')

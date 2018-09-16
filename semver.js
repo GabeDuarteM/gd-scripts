@@ -1,1 +1,1 @@
-module.exports = require("./build/config/releaserc")
+module.exports = require('./build/config/releaserc')

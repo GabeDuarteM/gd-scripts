@@ -1,1 +1,1 @@
-declare module "simple-git"
+declare module 'simple-git'

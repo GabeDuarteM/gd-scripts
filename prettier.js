@@ -1,1 +1,1 @@
-module.exports = require("./build/config/prettierrc")
+module.exports = require('./build/config/prettierrc')
