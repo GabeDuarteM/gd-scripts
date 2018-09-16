@@ -54,8 +54,8 @@ const config: Configuration = {
   devtool: shouldUseSourceMap ? 'source-map' : false,
   entry,
   output: {
-    // The build folder.
-    path: fromRoot('build'),
+    // The dist folder.
+    path: fromRoot('dist'),
     // Generated JS file names (with nested folders).
     // There will be one main bundle, and one file per asynchronous chunk.
     // We don't currently advertise code splitting but Webpack supports it.
@@ -206,7 +206,7 @@ const config: Configuration = {
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.
-          // In production, they would get copied to the `build` folder.
+          // In production, they would get copied to the `dist` folder.
           // This loader doesn't use a "test" so it will catch all modules
           // that fall through the other loaders.
           {

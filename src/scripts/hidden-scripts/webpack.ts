@@ -145,7 +145,7 @@ if (process.env.SCRIPTS_BUILD) {
   const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024
   ;(async () => {
     try {
-      // First, read the current file sizes in build directory.
+      // First, read the current file sizes in dist directory.
       // This lets us display how much they changed later.
       const previousFileSizes = await measureFileSizesBeforeBuild(paths.output)
       // Remove all content but keep the directory so that

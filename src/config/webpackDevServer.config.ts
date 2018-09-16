@@ -44,7 +44,7 @@ const createDevServerConfig = (
   // production build folder unless we copy them. However, copying the whole
   // project directory is dangerous because we may expose sensitive files.
   // Instead, we establish a convention that only files in `public` directory
-  // get served. Our build script will copy `public` into the `build` folder.
+  // get served. Our build script will copy `public` into the `dist` folder.
   // In `index.html`, you can get URL of `public` folder with %PUBLIC_URL%:
   // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
   // In JavaScript code, you can access it with `process.env.PUBLIC_URL`.
