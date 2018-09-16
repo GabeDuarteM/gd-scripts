@@ -6,7 +6,6 @@ import {
 import { join, resolve } from "path"
 import HtmlWebpackPlugin from "html-webpack-plugin"
 import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin"
-import WatchMissingNodeModulesPlugin from "react-dev-utils/WatchMissingNodeModulesPlugin"
 import ModuleScopePlugin from "react-dev-utils/ModuleScopePlugin"
 import ManifestPlugin from "webpack-manifest-plugin"
 
@@ -202,11 +201,6 @@ const config: Configuration = {
     }),
     new HotModuleReplacementPlugin(),
     new CaseSensitivePathsPlugin(),
-    // If you require a missing module and then `npm install` it, you still have
-    // to restart the development server for Webpack to discover it. This plugin
-    // makes the discovery automatic so you don't have to restart.
-    // See https://github.com/facebook/create-react-app/issues/186
-    new WatchMissingNodeModulesPlugin(join(appDirectory, "node_modules")),
     // Generate a manifest file which contains a mapping of all asset filenames
     // to their corresponding output file so that tools can pick it up without
     // having to parse `index.html`.
