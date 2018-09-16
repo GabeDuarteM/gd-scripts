@@ -24,10 +24,10 @@
     "kcd-scripts"
   ],
   "bin": {
-    "gd-scripts": "build/index.js"
+    "gd-scripts": "dist/index.js"
   },
   "files": [
-    "build",
+    "dist",
     "babel.js",
     "eslint.js",
     "prettier.js",

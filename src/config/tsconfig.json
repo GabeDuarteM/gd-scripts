@@ -7,7 +7,7 @@
     "strict": true,
     "lib": ["esnext"],
     "typeRoots": ["../../../../node_modules/@types", "../../../../src/@types"],
-    "outDir": "../../../../build",
+    "outDir": "../../../../dist",
 
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
@@ -15,7 +15,7 @@
   "include": ["../../../../src/**/*"],
   "exclude": [
     "../../../../node_modules/**/*",
-    "../../../../build/**/*",
+    "../../../../dist/**/*",
     "../../../../src/**/*.test.ts",
     "../../../../src/**/*.test.js"
   ]

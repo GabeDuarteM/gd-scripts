@@ -1,5 +1,5 @@
 const paths = {
-  output: 'build',
+  output: 'dist',
 }
 
 export default paths

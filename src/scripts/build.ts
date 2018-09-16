@@ -82,7 +82,7 @@ if (ignore.length > 0 && !isWatching) {
   const buildIgnore = ignore[1]
     .split(',')
     .filter(x => x !== '**/*.d.ts') // Do not exclude type definitions
-    .map(x => `build/${x}`)
+    .map(x => `dist/${x}`)
     .join(',')
 
   rimraf.sync(`{${buildIgnore}}`)
