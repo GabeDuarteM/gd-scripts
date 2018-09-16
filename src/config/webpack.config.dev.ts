@@ -13,7 +13,19 @@ import createBabelConfig from "./babelrc"
 import { hasFile, fromRoot, appDirectory } from "../utils"
 
 const useBuiltinConfig = !hasFile(".babelrc")
-const babelConfig = useBuiltinConfig && createBabelConfig()
+
+const getUserBabelConfig = () => {
+  const babelConfig = require(fromRoot(".babelrc"))
+  if (typeof babelConfig === "function") {
+    return babelConfig()
+  }
+
+  return babelConfig
+}
+
+const babelConfig = useBuiltinConfig
+  ? createBabelConfig()
+  : getUserBabelConfig()
 
 const entry = hasFile("src", "index.tsx")
   ? fromRoot(join("src", "index.tsx"))
