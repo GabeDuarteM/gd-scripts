@@ -4,6 +4,20 @@ const baseConfig = require("./eslintrc.base")
 const config = {
   ...baseConfig,
   plugins: [...baseConfig.plugins, "react", "jsx-a11y"],
+  parserOptions: {
+    ...baseConfig.parserOptions,
+    ecmaFeatures: {
+      ...baseConfig.parserOptions.ecmaFeatures,
+      jsx: true,
+    },
+  },
+  settings: {
+    ...baseConfig.settings,
+    react: {
+      pragma: "React",
+      version: "16.0",
+    },
+  },
   rules: {
     ...baseConfig.rules,
     "react/button-has-type": [
