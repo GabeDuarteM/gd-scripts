@@ -1,3 +1,5 @@
+import { Package } from 'read-pkg-up'
+
 interface Options {
   executable?: string
   cwd?: string
@@ -11,3 +13,28 @@ export declare const isGdScripts: () => boolean
 export declare const hasTests: () => boolean
 export declare const logMessage: (messsage: string) => void
 export declare const logScriptMessage: (script: string) => void
+export declare const parseEnv: (
+  name: string,
+  defaultValue: string | number | boolean,
+) => void
+export declare const ifAnyDep: <T, Y>(
+  deps: string[] | string,
+  ifTrue: T,
+  ifFalse: Y,
+) => T | Y
+export interface RequiredFilesSuccess {
+  success: true
+  dirName: string
+  fileName: string
+}
+export interface RequiredFilesFailed {
+  success: false
+  dirName: string
+  fileName: string
+  message: string
+}
+export declare const checkRequiredFiles: (
+  ...files: string[]
+) => RequiredFilesSuccess | RequiredFilesFailed
+export declare const appDirectory: string
+export declare const pkg: Package

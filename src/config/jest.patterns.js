@@ -1,6 +1,6 @@
 // @ts-check
 
-const testMatch = ['**/*.test.ts', '**/*.test.js']
+const testMatch = ['**/*.test.ts', '**/*.test.tsx', '**/*.test.js']
 const testIgnores = [
   'node_modules/',
   '<rootDir>/fixtures/',

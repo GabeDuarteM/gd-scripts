@@ -64,6 +64,33 @@ const hasFile = (...p) => fs.existsSync(fromRoot(...p))
  */
 const hasPkgProp = props => arrify(props).some(prop => has(pkg, prop))
 
+const hasPkgSubProp = pkgProp => props =>
+  hasPkgProp(arrify(props).map(p => `${pkgProp}.${p}`))
+
+const hasPeerDep = hasPkgSubProp('peerDependencies')
+const hasDep = hasPkgSubProp('dependencies')
+const hasDevDep = hasPkgSubProp('devDependencies')
+const hasAnyDep = args => [hasDep, hasDevDep, hasPeerDep].some(fn => fn(args))
+
+const ifAnyDep = (deps, ifTrue, ifFalse) =>
+  hasAnyDep(arrify(deps)) ? ifTrue : ifFalse
+
+const envIsSet = name =>
+  process.env.hasOwnProperty(name) &&
+  process.env[name] &&
+  process.env[name] !== 'undefined'
+
+const parseEnv = (name, defaultValue) => {
+  if (envIsSet(name)) {
+    try {
+      return JSON.parse(process.env[name])
+    } catch (err) {
+      return process.env[name]
+    }
+  }
+  return defaultValue
+}
+
 const hasTests = () => {
   const testPatterns = testMatch.join(',')
   const ignorePatterns = testIgnores.map(
@@ -92,6 +119,37 @@ const logScriptMessage = script => {
   logMessage(scriptMessage)
 }
 
+const checkRequiredFiles = (...files) => {
+  let currentFilePath
+  let currentDirName
+  let currentFileName
+  try {
+    files.forEach(filePath => {
+      currentFilePath = filePath
+      currentDirName = path.dirname(currentFilePath)
+      currentFileName = path.basename(currentFilePath)
+      fs.accessSync(filePath, fs.constants.F_OK)
+    })
+    return {
+      success: true,
+      fileName: currentFileName,
+      dirName: currentDirName,
+    }
+  } catch (err) {
+    const message = `
+${chalk.red('Could not find a required file.')}
+${chalk.red('  Name: ') + chalk.cyan(currentFileName)}
+${chalk.red('  Searched in: ') + chalk.cyan(currentDirName)}
+    `.trim()
+    return {
+      success: false,
+      fileName: currentFileName,
+      dirName: currentDirName,
+      message,
+    }
+  }
+}
+
 module.exports = {
   resolveBin,
   fromRoot,
@@ -101,4 +159,9 @@ module.exports = {
   hasTests,
   logMessage,
   logScriptMessage,
+  parseEnv,
+  ifAnyDep,
+  appDirectory,
+  pkg,
+  checkRequiredFiles,
 }

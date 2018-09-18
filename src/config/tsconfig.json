@@ -8,7 +8,6 @@
     "lib": ["esnext"],
     "typeRoots": ["../../../../node_modules/@types", "../../../../src/@types"],
     "outDir": "../../../../dist",
-
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },

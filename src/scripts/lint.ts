@@ -27,12 +27,12 @@ const filesGiven = parsedArgs._.length > 0
 
 const filesToApply = filesGiven ? [] : ['.']
 
-const extensions = ['--ext', '.js,.ts']
+const extensions = ['--ext', '.js,.ts,.tsx']
 
 const cacheLocation = ['--cache-location', 'node_modules/.cache/.eslintcache']
 
 const isLintable = (file: string) =>
-  file.endsWith('.js') || file.endsWith('.ts')
+  file.endsWith('.js') || file.endsWith('.ts') || file.endsWith('.tsx')
 
 if (filesGiven) {
   // we need to take all the flag-less arguments (the files that should be linted)
