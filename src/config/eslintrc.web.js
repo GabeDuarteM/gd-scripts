@@ -214,6 +214,7 @@ const config = {
     'jsx-a11y/role-supports-aria-props': 'error',
     'jsx-a11y/scope': 'error',
     'jsx-a11y/tabindex-no-positive': 'error',
+    'no-multi-str': 'off', // keep this until https://github.com/eslint/typescript-eslint-parser/issues/503 is closed
   },
 }
 
