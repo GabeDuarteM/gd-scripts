@@ -8,7 +8,7 @@ module.exports = {
     sourceType: 'module',
     ecmaVersion: 6,
   },
-  plugins: ['typescript', 'import'],
+  plugins: ['typescript', 'import', 'babel'],
   settings: {
     'import/resolver': {
       node: {
@@ -46,7 +46,7 @@ module.exports = {
     'no-implied-eval': 'error', // I mean, why would you use eval nowadays?
     'no-extend-native': 'error',
     'no-extra-bind': 'error',
-    'no-invalid-this': 'error',
+    'babel/no-invalid-this': 'error',
     'no-iterator': 'error',
     'no-labels': 'error',
     'no-loop-func': 'error',
@@ -114,7 +114,7 @@ module.exports = {
     'no-sequences': 'error',
     'no-throw-literal': 'error',
     'no-unmodified-loop-condition': 'error',
-    'no-unused-expressions': 'error',
+    'babel/no-unused-expressions': 'error',
     'no-useless-call': 'error',
     'no-useless-concat': 'error',
     'no-void': 'error',
@@ -142,7 +142,7 @@ module.exports = {
     'func-names': 'error',
     'lines-between-class-members': 'error',
     'max-statements-per-line': 'error',
-    'new-cap': 'error',
+    'babel/new-cap': 'error',
     'new-parens': 'error',
     'no-bitwise': 'error',
     'no-lonely-if': 'error',
