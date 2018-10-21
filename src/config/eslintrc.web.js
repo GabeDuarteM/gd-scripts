@@ -42,7 +42,6 @@ const config = {
       'error',
       { allowRequiredDefaults: false },
     ],
-    'react/destructuring-assignment': ['error', 'always'],
     'react/forbid-prop-types': [
       'error',
       {
