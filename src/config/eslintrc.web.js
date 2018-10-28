@@ -25,7 +25,7 @@ const config = {
     'import/extensions': [...baseConfig.settings['import/extensions'], '.tsx'],
     react: {
       pragma: 'React',
-      version: '16.0',
+      version: 'detect',
     },
   },
   rules: {
