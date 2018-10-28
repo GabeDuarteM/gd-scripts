@@ -83,7 +83,7 @@ const config: Configuration = {
   optimization: {
     splitChunks: {
       chunks: 'all',
-      name: 'vendors',
+      name: false,
     },
     runtimeChunk: true,
   },
