@@ -80,8 +80,13 @@ const test = async () => {
     },
   )
 
+  interface Result {
+    repoName: string
+    status: number
+  }
+
   const results = statuses.reduce(
-    (acc: Array<{ repoName: string; status: number }>, item, index) => [
+    (acc: Array<Result>, item, index) => [
       ...acc,
       { repoName: getRepoName(repos[index]), status: item },
     ],

@@ -24,8 +24,8 @@ const isReact = ifAnyDep('react', true, false)
 const envTargets = isTest
   ? { node: 'current' }
   : !isReact
-    ? { node: getNodeVersion(pkg) }
-    : undefined
+  ? { node: getNodeVersion(pkg) }
+  : undefined
 const envOptions = { modules: false, loose: true, targets: envTargets }
 
 module.exports = () => ({
