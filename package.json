@@ -85,7 +85,7 @@
     "semver": "^5.6.0",
     "simple-git": "^1.107.0",
     "sw-precache-webpack-plugin": "^0.11.5",
-    "thread-loader": "^1.2.0",
+    "thread-loader": "^2.0.0",
     "typescript": "^3.1.6",
     "typescript-eslint-parser": "^21.0.1",
     "uglifyjs-webpack-plugin": "^1.2.5",
