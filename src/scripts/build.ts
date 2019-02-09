@@ -1,6 +1,12 @@
 import spawn from 'cross-spawn'
 import rimraf from 'rimraf'
-import { hasPkgProp, resolveBin, hasFile, logScriptMessage } from '../utils'
+import {
+  hasPkgProp,
+  resolveBin,
+  hasFile,
+  logScriptMessage,
+  isTypescript,
+} from '../utils'
 import paths from '../paths'
 
 const unnecessaryArgumentsCount = 2
@@ -11,7 +17,9 @@ const isWatching = process.env.SCRIPT_WATCH === 'true'
 
 const useBuiltinConfig =
   !args.includes('--presets') && !hasFile('.babelrc') && !hasPkgProp('babel')
-const config = useBuiltinConfig ? ['--presets', 'gd-configs/babel'] : []
+const config = useBuiltinConfig
+  ? ['--presets', require.resolve('gd-configs/babel')]
+  : []
 
 const ignore = args.includes('--ignore')
   ? []
@@ -21,8 +29,6 @@ const ignore = args.includes('--ignore')
     ]
 
 const copyFiles = args.includes('--no-copy-files') ? [] : ['--copy-files']
-
-const isTypescript = hasFile('tsconfig.json')
 
 const useSpecifiedOutDir = args.includes('--out-dir')
 const outDir = useSpecifiedOutDir ? [] : ['--out-dir', paths.output]
@@ -61,7 +67,7 @@ const resultBabel = spawn.sync(
   { stdio: 'inherit' },
 )
 
-if (isTypescript && !isWatching) {
+if (isTypescript() && !isWatching) {
   spawn.sync(
     resolveBin('typescript', { executable: 'tsc' }),
     ['--emitDeclarationOnly'],
