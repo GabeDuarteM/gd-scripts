@@ -1,1 +1,3 @@
-module.exports = require("./src/config/eslintrc.base")
+const { getEslintConfigPath } = require('./src/utils')
+
+module.exports = require(getEslintConfigPath())

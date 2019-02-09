@@ -17,7 +17,7 @@ const args = process.argv.slice(unnecessaryArgumentsCount)
 
 const gdScripts = isGdScripts()
 const executor = gdScripts ? 'ts-node' : 'gd-scripts'
-const getArgsSpawn = (script: string) =>
+const getArgsSpawn = (script: string): string[] =>
   gdScripts ? ['src', script, ...args] : [script, ...args]
 const isTypescript = hasFile('tsconfig.json')
 
@@ -57,13 +57,13 @@ const finalResult = [
   resultTest.status,
   resultTypecheck.status,
   resultBuild.status,
-].some(x => x === 1)
+].some((x) => x === 1)
   ? 1
   : 0
 
 console.log(`\n${chalk.cyan('CI RESULTS:')}`)
 
-const logStatus = (script: string, status: number) => {
+const logStatus = (script: string, status: number): void => {
   console.log(
     `${script}${status === 0 ? chalk.green('SUCCESS') : chalk.red('ERROR')}`,
   )

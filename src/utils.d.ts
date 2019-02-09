@@ -38,3 +38,6 @@ export declare const checkRequiredFiles: (
 ) => RequiredFilesSuccess | RequiredFilesFailed
 export declare const appDirectory: string
 export declare const pkg: Package
+export declare const isTypescript: () => boolean
+export declare const isWeb: () => boolean
+export declare const getEslintConfigPath: () => string

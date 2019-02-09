@@ -1,4 +1,5 @@
 // @ts-check
+/* eslint-disable @typescript-eslint/no-var-requires */
 
 const fs = require('fs')
 const path = require('path')
@@ -9,7 +10,7 @@ const which = require('which')
 const glob = require('glob')
 const chalk = require('chalk').default
 
-const { testMatch, testIgnores } = require('./config/jest.patterns')
+const { testMatch, testIgnores } = require('gd-configs/jest/jest.patterns')
 
 const { pkg, path: pkgPath } = readPkgUp.sync({
   cwd: fs.realpathSync(process.cwd()),
@@ -62,20 +63,21 @@ const hasFile = (...p) => fs.existsSync(fromRoot(...p))
 /**
  * @param {any} props
  */
-const hasPkgProp = props => arrify(props).some(prop => has(pkg, prop))
+const hasPkgProp = (props) => arrify(props).some((prop) => has(pkg, prop))
 
-const hasPkgSubProp = pkgProp => props =>
-  hasPkgProp(arrify(props).map(p => `${pkgProp}.${p}`))
+const hasPkgSubProp = (pkgProp) => (props) =>
+  hasPkgProp(arrify(props).map((p) => `${pkgProp}.${p}`))
 
 const hasPeerDep = hasPkgSubProp('peerDependencies')
 const hasDep = hasPkgSubProp('dependencies')
 const hasDevDep = hasPkgSubProp('devDependencies')
-const hasAnyDep = args => [hasDep, hasDevDep, hasPeerDep].some(fn => fn(args))
+const hasAnyDep = (args) =>
+  [hasDep, hasDevDep, hasPeerDep].some((fn) => fn(args))
 
 const ifAnyDep = (deps, ifTrue, ifFalse) =>
   hasAnyDep(arrify(deps)) ? ifTrue : ifFalse
 
-const envIsSet = name =>
+const envIsSet = (name) =>
   process.env.hasOwnProperty(name) &&
   process.env[name] &&
   process.env[name] !== 'undefined'
@@ -94,7 +96,7 @@ const parseEnv = (name, defaultValue) => {
 const hasTests = () => {
   const testPatterns = testMatch.join(',')
   const ignorePatterns = testIgnores.map(
-    x => `${x}${x.endsWith('/') ? '' : '/'}**/*`,
+    (x) => `${x}${x.endsWith('/') ? '' : '/'}**/*`,
   )
   const globStr = `{${testPatterns}}`
   const testList = glob.sync(globStr, {
@@ -107,14 +109,14 @@ const hasTests = () => {
 /**
  * @param {string} message
  */
-const logMessage = message => {
+const logMessage = (message) => {
   console.log(`${chalk.bgCyan(chalk.black('[gd-scripts]'))} ${message}\n`)
 }
 
 /**
  * @param {string} script
  */
-const logScriptMessage = script => {
+const logScriptMessage = (script) => {
   const scriptMessage = `Running ${chalk.cyan(script.toUpperCase())} script.`
   logMessage(scriptMessage)
 }
@@ -124,7 +126,7 @@ const checkRequiredFiles = (...files) => {
   let currentDirName
   let currentFileName
   try {
-    files.forEach(filePath => {
+    files.forEach((filePath) => {
       currentFilePath = filePath
       currentDirName = path.dirname(currentFilePath)
       currentFileName = path.basename(currentFilePath)
@@ -150,6 +152,15 @@ ${chalk.red('  Searched in: ') + chalk.cyan(currentDirName)}
   }
 }
 
+const isTypescript = () => hasFile('tsconfig.json')
+const isWeb = () => hasDep('react')
+const getEslintConfigPath = () => {
+  const subDir = isTypescript() ? '/ts' : ''
+  const file = isWeb() ? '/web.js' : '/index.js'
+
+  return `gd-configs/eslint${subDir}${file}`
+}
+
 module.exports = {
   resolveBin,
   fromRoot,
@@ -164,4 +175,7 @@ module.exports = {
   appDirectory,
   pkg,
   checkRequiredFiles,
+  isTypescript,
+  isWeb,
+  getEslintConfigPath,
 }

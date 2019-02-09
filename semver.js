@@ -1,1 +1,1 @@
-module.exports = require('./dist/config/releaserc')
+module.exports = require('gd-configs/semantic-release')

@@ -10,7 +10,7 @@ const [processExecutor, ignoredBin, script, ...args] = process.argv
 
 const executor = isGdScripts() ? 'ts-node' : processExecutor
 
-const handleSignal = (result: SpawnSyncReturns<Buffer>) => {
+const handleSignal = (result: SpawnSyncReturns<Buffer>): void => {
   if (result.signal === 'SIGKILL') {
     // eslint-disable-next-line no-console
     console.log(
@@ -29,7 +29,7 @@ const handleSignal = (result: SpawnSyncReturns<Buffer>) => {
   process.exit(1)
 }
 
-const attemptResolve = (...resolveArgs: string[]) => {
+const attemptResolve = (...resolveArgs: string[]): any => {
   try {
     return (require.resolve as any)(...resolveArgs)
   } catch (error) {
@@ -37,7 +37,7 @@ const attemptResolve = (...resolveArgs: string[]) => {
   }
 }
 
-const getNodeEnv: () => string = () => {
+const getNodeEnv = (): string => {
   if (process.env.NODE_ENV) {
     return process.env.NODE_ENV
   }
@@ -53,9 +53,9 @@ const getNodeEnv: () => string = () => {
 
 // this is required to address an issue in cross-spawn
 // https://github.com/kentcdodds/kcd-scripts/issues/4
-const getEnv = () =>
+const getEnv = (): any =>
   Object.keys(process.env)
-    .filter(key => process.env[key] !== undefined)
+    .filter((key) => process.env[key] !== undefined)
     .reduce(
       (envCopy, key) => {
         envCopy[key] = process.env[key] as any
@@ -68,7 +68,7 @@ const getEnv = () =>
       },
     )
 
-const spawnScript = () => {
+const spawnScript = (): void => {
   const relativeScriptPath = path.join(__dirname, './scripts', script)
   const scriptPath = attemptResolve(relativeScriptPath)
 
@@ -96,15 +96,15 @@ if (script) {
   // So we normalize it before attempting to strip out the scripts path.
   const scriptsAvailableMessage = scriptsAvailable
     .map(path.normalize)
-    .filter(x => !(x.endsWith('.map') || x.endsWith('.d.ts')))
-    .map(s =>
+    .filter((x) => !(x.endsWith('.map') || x.endsWith('.d.ts')))
+    .map((s) =>
       s
         .replace(scriptsPath, '')
         .replace(/__tests__/, '')
         .replace(/\.(t|j)s$/, ''),
     )
     .filter(Boolean)
-    .filter(x => x !== 'hidden-scripts')
+    .filter((x) => x !== 'hidden-scripts')
     .join('\n  ')
     .trim()
   const fullMessage = `
