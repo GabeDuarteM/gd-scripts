@@ -20,6 +20,15 @@ const useBuiltinConfig =
   !hasFile('.eslintrc.js') &&
   !hasPkgProp('eslintConfig')
 
+const useBuiltinIgnore =
+  !args.includes('--ignore-path') &&
+  !hasFile('.eslintignore') &&
+  !hasPkgProp('eslintIgnore')
+
+const ignore = useBuiltinIgnore
+  ? ['--ignore-path', require.resolve('gd-configs/eslint/ignore')]
+  : []
+
 const config = useBuiltinConfig
   ? ['--config', require.resolve(getEslintConfigPath())]
   : []
@@ -46,6 +55,7 @@ if (filesGiven) {
 
 const lintArguments = [
   ...config,
+  ...ignore,
   ...extensions,
   ...cacheLocation,
   ...cache,
