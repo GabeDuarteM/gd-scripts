@@ -1,16 +1,15 @@
 import path from 'path'
 import spawn from 'cross-spawn'
 import glob from 'glob'
-import { SpawnSyncReturns } from 'child_process'
 import chalk from 'chalk'
 
 import { isGdScripts } from './utils'
 
 const [processExecutor, ignoredBin, script, ...args] = process.argv
 
-const executor = isGdScripts() ? 'ts-node' : processExecutor
+const executor = isGdScripts() ? 'babel-node' : processExecutor
 
-const handleSignal = (result: SpawnSyncReturns<Buffer>): void => {
+const handleSignal = (result) => {
   if (result.signal === 'SIGKILL') {
     // eslint-disable-next-line no-console
     console.log(
@@ -29,15 +28,15 @@ const handleSignal = (result: SpawnSyncReturns<Buffer>): void => {
   process.exit(1)
 }
 
-const attemptResolve = (...resolveArgs: string[]): any => {
+const attemptResolve = (...resolveArgs) => {
   try {
-    return (require.resolve as any)(...resolveArgs)
+    return require.resolve(...resolveArgs)
   } catch (error) {
     return null
   }
 }
 
-const getNodeEnv = (): string => {
+const getNodeEnv = () => {
   if (process.env.NODE_ENV) {
     return process.env.NODE_ENV
   }
@@ -53,12 +52,12 @@ const getNodeEnv = (): string => {
 
 // this is required to address an issue in cross-spawn
 // https://github.com/kentcdodds/kcd-scripts/issues/4
-const getEnv = (): any =>
+const getEnv = () =>
   Object.keys(process.env)
     .filter((key) => process.env[key] !== undefined)
     .reduce(
       (envCopy, key) => {
-        envCopy[key] = process.env[key] as any
+        envCopy[key] = process.env[key]
 
         return envCopy
       },
@@ -68,7 +67,7 @@ const getEnv = (): any =>
       },
     )
 
-const spawnScript = (): void => {
+const spawnScript = () => {
   const relativeScriptPath = path.join(__dirname, './scripts', script)
   const scriptPath = attemptResolve(relativeScriptPath)
 

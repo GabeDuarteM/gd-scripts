@@ -43,7 +43,7 @@ const extensions = ['--ext', '.js,.ts,.tsx']
 
 const cacheLocation = ['--cache-location', 'node_modules/.cache/.eslintcache']
 
-const isLintable = (file: string): boolean =>
+const isLintable = (file) =>
   file.endsWith('.js') || file.endsWith('.ts') || file.endsWith('.tsx')
 
 const isCi = !!process.env.SCRIPT_CI
