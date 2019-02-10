@@ -46,6 +46,9 @@ const cacheLocation = ['--cache-location', 'node_modules/.cache/.eslintcache']
 const isLintable = (file: string): boolean =>
   file.endsWith('.js') || file.endsWith('.ts') || file.endsWith('.tsx')
 
+const isCi = !!process.env.SCRIPT_CI
+const maxWarnings = isCi ? ['--max-warnings=0'] : []
+
 if (filesGiven) {
   // we need to take all the flag-less arguments (the files that should be linted)
   // and filter out the ones that aren't js files. Otherwise json or css files
@@ -56,6 +59,7 @@ if (filesGiven) {
 const lintArguments = [
   ...config,
   ...ignore,
+  ...maxWarnings,
   ...extensions,
   ...cacheLocation,
   ...cache,
