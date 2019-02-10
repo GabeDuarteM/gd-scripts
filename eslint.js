@@ -1,4 +1,4 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { getEslintConfigPath } = require('./src/utils')
+const { getEslintConfigPath } = require('./dist/utils')
 
 module.exports = require(getEslintConfigPath())
