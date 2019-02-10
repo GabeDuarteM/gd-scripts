@@ -1,3 +1,0 @@
-{
-  "extends": "./dist/config/tsconfig.web.json"
-}

@@ -42,7 +42,7 @@ documenting or testing it super duper well because it's really specific to my
 needs. You'll find all available scripts in `src/scripts`.
 
 This project actually dogfoods itself. If you look in the `package.json`, you'll
-find scripts with `ts-node src {scriptName}`. This serves as an example of some
+find scripts with `babel-node src {scriptName}`. This serves as an example of some
 of the things you can do with `gd-scripts`.
 
 ### Overriding Config

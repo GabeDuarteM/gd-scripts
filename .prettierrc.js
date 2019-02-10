@@ -1,1 +1,1 @@
-module.exports = require("./src/config/prettierrc")
+module.exports = require('gd-configs/prettier')

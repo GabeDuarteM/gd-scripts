@@ -24,7 +24,7 @@ const config =
   !args.includes('--config') &&
   !hasFile('jest.config.js') &&
   !hasPkgProp('jest')
-    ? ['--config', JSON.stringify(require('../config/jest.config'))]
+    ? ['--config', JSON.stringify(require('gd-configs/jest'))]
     : []
 
 logScriptMessage('TEST')

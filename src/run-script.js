@@ -1,16 +1,15 @@
 import path from 'path'
 import spawn from 'cross-spawn'
 import glob from 'glob'
-import { SpawnSyncReturns } from 'child_process'
 import chalk from 'chalk'
 
 import { isGdScripts } from './utils'
 
 const [processExecutor, ignoredBin, script, ...args] = process.argv
 
-const executor = isGdScripts() ? 'ts-node' : processExecutor
+const executor = isGdScripts() ? 'babel-node' : processExecutor
 
-const handleSignal = (result: SpawnSyncReturns<Buffer>) => {
+const handleSignal = (result) => {
   if (result.signal === 'SIGKILL') {
     // eslint-disable-next-line no-console
     console.log(
@@ -29,15 +28,15 @@ const handleSignal = (result: SpawnSyncReturns<Buffer>) => {
   process.exit(1)
 }
 
-const attemptResolve = (...resolveArgs: string[]) => {
+const attemptResolve = (...resolveArgs) => {
   try {
-    return (require.resolve as any)(...resolveArgs)
+    return require.resolve(...resolveArgs)
   } catch (error) {
     return null
   }
 }
 
-const getNodeEnv: () => string = () => {
+const getNodeEnv = () => {
   if (process.env.NODE_ENV) {
     return process.env.NODE_ENV
   }
@@ -55,10 +54,10 @@ const getNodeEnv: () => string = () => {
 // https://github.com/kentcdodds/kcd-scripts/issues/4
 const getEnv = () =>
   Object.keys(process.env)
-    .filter(key => process.env[key] !== undefined)
+    .filter((key) => process.env[key] !== undefined)
     .reduce(
       (envCopy, key) => {
-        envCopy[key] = process.env[key] as any
+        envCopy[key] = process.env[key]
 
         return envCopy
       },
@@ -96,15 +95,15 @@ if (script) {
   // So we normalize it before attempting to strip out the scripts path.
   const scriptsAvailableMessage = scriptsAvailable
     .map(path.normalize)
-    .filter(x => !(x.endsWith('.map') || x.endsWith('.d.ts')))
-    .map(s =>
+    .filter((x) => !(x.endsWith('.map') || x.endsWith('.d.ts')))
+    .map((s) =>
       s
         .replace(scriptsPath, '')
         .replace(/__tests__/, '')
         .replace(/\.(t|j)s$/, ''),
     )
     .filter(Boolean)
-    .filter(x => x !== 'hidden-scripts')
+    .filter((x) => x !== 'hidden-scripts')
     .join('\n  ')
     .trim()
   const fullMessage = `
