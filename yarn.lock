@@ -1516,11 +1516,6 @@ array-unique@^0.3.2:
   resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
 
-arrify@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.0.tgz#9c353b6b3b7c934f1f5091983ef7cdce1d9e9477"
-  integrity sha512-C+FpZX94te3l4TQu40KxfwOKlXQr6b+AcpFp/0bb2JbUX8P6FwL0srF/shrVgklis9AAdeUVwzVmyOiFzm0/ww==
-
 arrify@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
@@ -3399,12 +3394,12 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
-gd-configs@6.0.2:
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/gd-configs/-/gd-configs-6.0.2.tgz#a0127fdef5259da3ff5d0f724669851b66c32ad1"
-  integrity sha512-LcuNoemJiM0sQ1kl2s0nWgOv72FpvcnabKpwo/K8cY9U6MUhKXrlg+OMvBD2/E+i3LP46IbUQwYm0ZKDPJbutQ==
+gd-configs@6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/gd-configs/-/gd-configs-6.0.3.tgz#b03f449863ddfe1d43c44d8b95da9c7466986d5d"
+  integrity sha512-oMDhJoXJ162P2sjdS98o1lRsKAsz0oXfP4bIG6YDE7tqEBPe2ZcH/FoRBdbh4ztyyqTjOeJp98gW9ph7eQQDsw==
   dependencies:
-    arrify "2.0.0"
+    arrify "2.0.1"
     lodash.has "4.5.2"
     read-pkg-up "5.0.0"
 
