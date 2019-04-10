@@ -1,12 +1,12 @@
 <div align="center">
   <h1>🛠 gd-scripts 📦</h1>
 
-  <p>CLI with common scripts for my projects, <strike>copied</strike> inspired from <a href="https://github.com/kentcdodds/kcd-scripts">kcd-scripts</a>.</p>
+  <p>CLI with common scripts for my projects, inspired from <a href="https://github.com/kentcdodds/kcd-scripts">kcd-scripts</a>.</p>
 </div>
 
 <p align="center">
-  <a href="https://travis-ci.org/GabrielDuarteM/gd-scripts">
-    <img src="https://img.shields.io/travis/GabrielDuarteM/gd-scripts/master.svg" alt="Travis branch">
+  <a href="https://travis-ci.com/GabrielDuarteM/gd-scripts">
+    <img src="https://img.shields.io/travis/com/GabrielDuarteM/gd-scripts/master.svg" alt="Travis branch">
   </a>
   <a href="http://makeapullrequest.com">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome">
