@@ -67,7 +67,7 @@
     "eslint-plugin-import": "2.17.2",
     "eslint-plugin-jsx-a11y": "6.2.1",
     "eslint-plugin-prettier": "3.0.1",
-    "eslint-plugin-react": "7.12.4",
+    "eslint-plugin-react": "7.13.0",
     "gd-configs": "6.0.3",
     "glob": "7.1.3",
     "is-ci": "2.0.0",
