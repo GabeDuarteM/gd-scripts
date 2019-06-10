@@ -4,6 +4,8 @@ import { join } from 'path'
 import isCi from 'is-ci'
 import execa from 'execa'
 
+import { logMessage } from '../src/utils'
+
 const [, , ...opts] = process.argv
 
 let noTeardown
@@ -67,7 +69,7 @@ const createTestEnvironment = (templateDirectory) => {
 
       return code
     } catch (err) {
-      console.error(`There was an error running ${templateDirectory}`)
+      logMessage(`There was an error running ${templateDirectory}`)
 
       console.error(err)
 
