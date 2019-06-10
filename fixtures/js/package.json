@@ -1,0 +1,16 @@
+{
+  "name": "js",
+  "version": "0.0.0-development",
+  "author": "Gabriel Duarte (https://www.gabrielduarte.tech)",
+  "license": "MIT",
+  "description": "",
+  "scripts": {
+    "start": "gd-scripts start",
+    "build": "gd-scripts build",
+    "ci": "gd-scripts ci",
+    "lint": "gd-scripts lint"
+  },
+  "devDependencies": {
+    "@types/node": "12.0.7"
+  }
+}

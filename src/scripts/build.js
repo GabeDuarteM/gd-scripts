@@ -67,8 +67,10 @@ const resultBabel = spawn.sync(
   { stdio: 'inherit' },
 )
 
+let resultTypescript
+
 if (isTypescript() && !isWatching) {
-  spawn.sync(
+  resultTypescript = spawn.sync(
     resolveBin('typescript', { executable: 'tsc' }),
     ['--emitDeclarationOnly'],
     { stdio: 'inherit' },
@@ -87,4 +89,14 @@ if (ignore.length > 0 && !isWatching) {
   rimraf.sync(`{${buildIgnore}}`)
 }
 
-process.exit(resultBabel.status)
+const getResult = (ts, babel) => {
+  if (ts !== undefined) {
+    return Math.max(ts.status, babel.status)
+  }
+
+  return babel.status
+}
+
+const result = getResult(resultTypescript, resultBabel)
+
+process.exit(result)

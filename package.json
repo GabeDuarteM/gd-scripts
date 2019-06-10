@@ -10,10 +10,10 @@
     "start": "babel-node src start",
     "build": "babel-node src build",
     "lint": "babel-node src lint",
-    "pretest": "npm run build",
-    "test": "babel-node src/test",
+    "pretest": "yarn build && yalc publish",
+    "test": "babel-node fixtures",
     "typecheck": "babel-node src typecheck",
-    "ci": "babel-node src ci",
+    "ci": "babel-node src ci && yarn test",
     "release": "semantic-release"
   },
   "keywords": [
@@ -82,6 +82,10 @@
   },
   "devDependencies": {
     "@babel/node": "7.4.5",
-    "semantic-release": "15.13.12"
+    "execa": "1.0.0",
+    "fs-extra": "8.0.1",
+    "semantic-release": "15.13.12",
+    "tempy": "0.3.0",
+    "yalc": "1.0.0-pre.31"
   }
 }
