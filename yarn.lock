@@ -3443,10 +3443,10 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
-gd-configs@6.1.1:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/gd-configs/-/gd-configs-6.1.1.tgz#1b6d692afc4dca57ca06078dc20c4e1ac1d21ef2"
-  integrity sha512-cIX0Vsf+8EbfHjkCC2UXUSbCwwv/3tNGDMdEcrXnGhxjwHm5PWncr4y2/POrFmi9lgSuvu2PAAkJ/Y/3DSFBKA==
+gd-configs@6.1.2:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/gd-configs/-/gd-configs-6.1.2.tgz#19d47587e7180c4d28cbe6d9e2a04ea5287046aa"
+  integrity sha512-TlS16VF5ZBhHqwHXNO5HoOJtppxz4Aq8FERxgurwDod07t0bd0vzBd/d6mDa06gRm3jYDXYWe0K8ofDlW4nKVQ==
   dependencies:
     arrify "2.0.1"
     lodash.has "4.5.2"
