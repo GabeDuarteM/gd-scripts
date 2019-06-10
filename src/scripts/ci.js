@@ -52,14 +52,12 @@ const resultBuild = spawn.sync(
   },
 )
 
-const finalResult = [
+const finalResult = Math.max(
   resultLint.status,
   resultTest.status,
   resultTypecheck.status,
   resultBuild.status,
-].some((x) => x === 1)
-  ? 1
-  : 0
+)
 
 console.log(`\n${chalk.cyan('CI RESULTS:')}`)
 
