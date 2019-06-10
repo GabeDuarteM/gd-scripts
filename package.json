@@ -13,7 +13,7 @@
     "pretest": "yarn build && yalc publish",
     "test": "babel-node fixtures",
     "typecheck": "babel-node src typecheck",
-    "ci": "babel-node src ci",
+    "ci": "babel-node src ci && yarn test",
     "release": "semantic-release"
   },
   "keywords": [
