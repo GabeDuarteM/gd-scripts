@@ -85,7 +85,7 @@
     "@babel/node": "7.4.5",
     "execa": "1.0.0",
     "fs-extra": "8.0.1",
-    "semantic-release": "15.13.12",
+    "semantic-release": "15.13.16",
     "tempy": "0.3.0",
     "yalc": "1.0.0-pre.31"
   }
