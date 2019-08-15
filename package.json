@@ -83,7 +83,7 @@
   },
   "devDependencies": {
     "@babel/node": "7.5.0",
-    "execa": "1.0.0",
+    "execa": "2.0.4",
     "fs-extra": "8.1.0",
     "semantic-release": "15.13.18",
     "tempy": "0.3.0",
