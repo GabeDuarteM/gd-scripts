@@ -8384,10 +8384,10 @@ y18n@^3.2.1:
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-4.0.0.tgz#95ef94f85ecc81d007c264e190a120f0a3c8566b"
   integrity sha512-r9S/ZyXu/Xu9q1tYlpsLIsa3EeLXXk0VwlxqTcFRfg9EhMW+17kbt9G0NrgCmhGb5vT2hyhJZLfDGx+7+5Uj/w==
 
-yalc@1.0.0-pre.31:
-  version "1.0.0-pre.31"
-  resolved "https://registry.yarnpkg.com/yalc/-/yalc-1.0.0-pre.31.tgz#a3d4482e86215e553d9ccf7526736574ad5e836f"
-  integrity sha512-GZC/kHfXAlsbSjMnC4LvXUi5LAkPGuBUBZh/STU28AL40CNYBsYzX5aRrid5nWZ0YQFX1z6HTJm5WcYO8CSQGg==
+yalc@1.0.0-pre.34:
+  version "1.0.0-pre.34"
+  resolved "https://registry.yarnpkg.com/yalc/-/yalc-1.0.0-pre.34.tgz#137cfaded3417b7d66a69864a02aa691b6ef7856"
+  integrity sha512-Gqx567+kayHS1XbatQJcB9HnUcVMarWxPw8tPdVNte6oxZkC7pfoRKOCqjEGw8OkXioQd/Vrq+SbfkzAEDh98g==
   dependencies:
     fs-extra "^8.0.1"
     glob "^7.1.4"
