@@ -13,8 +13,7 @@
     "pretest": "yarn build && yalc publish",
     "test": "babel-node fixtures",
     "typecheck": "babel-node src typecheck",
-    "ci": "babel-node src ci && yarn test",
-    "release": "semantic-release"
+    "ci": "babel-node src ci && yarn test"
   },
   "keywords": [
     "gd-scripts",
@@ -85,7 +84,6 @@
     "@babel/node": "7.7.0",
     "execa": "3.3.0",
     "fs-extra": "8.1.0",
-    "semantic-release": "15.13.18",
     "tempy": "0.3.0",
     "yalc": "1.0.0-pre.34"
   }
