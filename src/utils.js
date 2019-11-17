@@ -75,7 +75,7 @@ const ifAnyDep = (deps, ifTrue, ifFalse) =>
   hasAnyDep(arrify(deps)) ? ifTrue : ifFalse
 
 const envIsSet = (name) =>
-  process.env.hasOwnProperty(name) &&
+  Object.prototype.hasOwnProperty.call(process.env, name) &&
   process.env[name] &&
   process.env[name] !== 'undefined'
 
