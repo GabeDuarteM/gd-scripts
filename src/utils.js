@@ -5,7 +5,7 @@ const has = require('lodash.has')
 const readPkgUp = require('read-pkg-up')
 const which = require('which')
 const glob = require('glob')
-const chalk = require('chalk').default
+const chalk = require('chalk')
 
 const { testMatch, testIgnores } = require('gd-configs/jest/jest.patterns')
 
