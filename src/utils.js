@@ -9,7 +9,7 @@ const chalk = require('chalk')
 
 const { testMatch, testIgnores } = require('gd-configs/jest/jest.patterns')
 
-const { package: pkg, path: pkgPath } = readPkgUp.sync({
+const { packageJson: pkg, path: pkgPath } = readPkgUp.sync({
   cwd: fs.realpathSync(process.cwd()),
 })
 const appDirectory = path.dirname(pkgPath)
