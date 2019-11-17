@@ -62,12 +62,12 @@ const createTestEnvironment = (templateDirectory) => {
   const test = async () => {
     try {
       await setup()
-      const { code } = await execa('yarnpkg', ['run', 'ci'], {
+      const { exitCode } = await execa('yarnpkg', ['run', 'ci'], {
         cwd: testDirectory,
         stdio: 'inherit',
       })
 
-      return code
+      return exitCode
     } catch (err) {
       logMessage(`There was an error running ${templateDirectory}`)
 
