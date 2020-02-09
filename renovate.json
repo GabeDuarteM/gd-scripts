@@ -1,3 +1,12 @@
 {
-  "extends": ["config:base"]
+  "extends": ["config:base"],
+  "packageRules": [
+    {
+      "packageNames": ["@types/node"],
+      "automerge": "true",
+      "major": {
+        "enabled": true
+      }
+    }
+  ]
 }
