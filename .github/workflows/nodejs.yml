@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout code
-    - uses: actions/checkout@v2
+      uses: actions/checkout@v2
 
     - name: Setup Node.js
       uses: actions/setup-node@v1
@@ -57,4 +57,3 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
