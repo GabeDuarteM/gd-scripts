@@ -5,8 +5,8 @@
 </div>
 
 <p align="center">
-  <a href="https://travis-ci.com/GabrielDuarteM/gd-scripts">
-    <img src="https://img.shields.io/travis/com/GabrielDuarteM/gd-scripts/master.svg" alt="Travis branch">
+  <a href="https://github.com/GabrielDuarteM/gd-scripts/actions?query=workflow%3ACI+branch%3Amaster">
+    <img src="https://github.com/GabrielDuarteM/gd-scripts/workflows/CI/badge.svg" alt="CI Status">
   </a>
   <a href="http://makeapullrequest.com">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome">
