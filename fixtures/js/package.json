@@ -11,6 +11,6 @@
     "lint": "gd-scripts lint"
   },
   "devDependencies": {
-    "@types/node": "13.7.0"
+    "@types/node": "13.7.1"
   }
 }
