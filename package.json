@@ -83,7 +83,7 @@
   "devDependencies": {
     "@babel/node": "7.7.0",
     "execa": "3.3.0",
-    "fs-extra": "8.1.0",
+    "fs-extra": "9.0.0",
     "tempy": "0.3.0",
     "yalc": "1.0.0-pre.34"
   }
