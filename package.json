@@ -1,90 +1,18 @@
 {
-  "name": "gd-scripts",
-  "version": "0.0.0-development",
-  "main": "index.js",
-  "author": "Gabriel Duarte (https://github.com/GabrielDuarteM/)",
-  "license": "MIT",
-  "description": "CLI with common scripts for my projects",
+  "name": "monorepo",
+  "author": "Gabriel Duarte (https://gabrielduarte.dev)",
+  "private": true,
   "scripts": {
-    "scripts": "babel-node src",
-    "start": "babel-node src start",
-    "build": "babel-node src build",
-    "lint": "babel-node src lint",
-    "pretest": "yarn build && yalc publish",
-    "test": "babel-node fixtures",
-    "typecheck": "babel-node src typecheck",
-    "ci": "babel-node src ci && yarn test"
+    "test": "ls ./fixtures | xargs -I {} bash -c \"cd ./fixtures/'{}' && yarn run ci\"",
+    "ci": "yarn run test"
   },
-  "keywords": [
-    "gd-scripts",
-    "cli",
-    "toolbox",
-    "react-scripts",
-    "kcd-scripts"
+  "workspaces": [
+    "packages/*",
+    "fixtures/*"
   ],
-  "bin": {
-    "gd-scripts": "dist/index.js"
-  },
-  "files": [
-    "dist",
-    "babel.js",
-    "eslint.js",
-    "eslint.web.js",
-    "prettier.js",
-    "semver.js",
-    "typescript.json",
-    "typescript.web.json"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gabrielduartem/gd-scripts.git"
-  },
-  "bugs": {
-    "url": "https://github.com/gabrielduartem/gd-scripts/issues"
-  },
-  "homepage": "https://github.com/GabrielDuarteM/gd-scripts#readme",
-  "dependencies": {
-    "@babel/cli": "7.7.0",
-    "@babel/core": "7.7.2",
-    "@babel/plugin-proposal-class-properties": "7.7.0",
-    "@babel/plugin-proposal-object-rest-spread": "7.6.2",
-    "@babel/plugin-transform-modules-commonjs": "7.7.0",
-    "@babel/preset-env": "7.7.1",
-    "@babel/preset-react": "7.7.0",
-    "@babel/preset-typescript": "7.7.2",
-    "@typescript-eslint/eslint-plugin": "2.7.0",
-    "@typescript-eslint/parser": "2.7.0",
-    "arrify": "2.0.1",
-    "babel-eslint": "10.0.3",
-    "babel-jest": "24.9.0",
-    "babel-plugin-macros": "2.6.2",
-    "babel-plugin-minify-dead-code-elimination": "0.5.1",
-    "chalk": "3.0.0",
-    "cross-spawn": "7.0.1",
-    "eslint": "6.6.0",
-    "eslint-config-prettier": "6.6.0",
-    "eslint-plugin-babel": "5.3.0",
-    "eslint-plugin-import": "2.18.2",
-    "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-prettier": "3.1.1",
-    "eslint-plugin-react": "7.16.0",
-    "gd-configs": "6.1.3",
-    "glob": "7.1.6",
-    "is-ci": "2.0.0",
-    "jest": "24.9.0",
-    "lodash.has": "4.5.2",
-    "prettier": "1.19.1",
-    "read-pkg-up": "7.0.0",
-    "rimraf": "3.0.0",
-    "typescript": "3.7.2",
-    "which": "2.0.1",
-    "yargs-parser": "16.1.0"
-  },
   "devDependencies": {
-    "@babel/node": "7.7.0",
-    "execa": "3.3.0",
-    "fs-extra": "8.1.0",
-    "tempy": "0.3.0",
-    "yalc": "1.0.0-pre.34"
+    "@gabrielduartem/eslint-config": "0.0.0-development",
+    "lerna": "3.20.2",
+    "prettier": "2.0.1"
   }
 }

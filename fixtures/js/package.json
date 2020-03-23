@@ -1,9 +1,10 @@
 {
   "name": "js",
   "version": "0.0.0-development",
-  "author": "Gabriel Duarte (https://www.gabrielduarte.tech)",
+  "author": "Gabriel Duarte (https://gabrielduarte.dev)",
   "license": "MIT",
   "description": "",
+  "private": true,
   "scripts": {
     "start": "gd-scripts start",
     "build": "gd-scripts build",
@@ -11,6 +12,7 @@
     "lint": "gd-scripts lint"
   },
   "devDependencies": {
-    "@types/node": "13.9.2"
+    "@types/node": "13.9.2",
+    "gd-scripts": "0.0.0-development"
   }
 }

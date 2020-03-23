@@ -1,0 +1,9 @@
+{
+  "name": "@gabrielduartem/typescript-config",
+  "version": "0.0.0-development",
+  "main": "base.json",
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^3.8.3"
+  }
+}
