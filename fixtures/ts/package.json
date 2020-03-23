@@ -1,7 +1,8 @@
 {
   "name": "ts",
   "version": "0.0.0-development",
-  "author": "Gabriel Duarte (https://www.gabrielduarte.tech)",
+  "author": "Gabriel Duarte (https://gabrielduarte.dev)",
+  "private": true,
   "license": "MIT",
   "description": "test project",
   "scripts": {
@@ -12,6 +13,7 @@
     "typecheck": "gd-scripts typecheck"
   },
   "devDependencies": {
-    "@types/node": "13.9.2"
+    "@types/node": "13.9.2",
+    "gd-scripts": "0.0.0-development"
   }
 }

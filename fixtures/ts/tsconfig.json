@@ -1,3 +1,16 @@
 {
-  "extends": "./node_modules/gd-scripts/typescript.json"
+  "extends": "gd-scripts/typescript.json",
+  // Because this is a monorepo and the packages are symlinked, we have
+  // to overwrite some paths, so that they point to the right place
+  "compilerOptions": {
+    "outDir": "dist",
+    "typeRoots": ["../../node_modules/@types", "src/types"]
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules/**/*",
+    "dist/**/*",
+    "src/**/*.test.ts",
+    "src/**/*.test.js"
+  ]
 }

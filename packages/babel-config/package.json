@@ -1,0 +1,20 @@
+{
+  "name": "@gabrielduartem/babel-config",
+  "version": "0.0.0-development",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.9.0",
+    "@babel/plugin-proposal-class-properties": "7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "7.9.0",
+    "@babel/plugin-transform-modules-commonjs": "7.9.0",
+    "@babel/preset-env": "7.9.0",
+    "@babel/preset-react": "7.9.1",
+    "@babel/preset-typescript": "7.9.0",
+    "babel-plugin-macros": "2.8.0",
+    "babel-plugin-minify-dead-code-elimination": "0.5.1",
+    "read-pkg-up": "^7.0.1",
+    "semver": "^7.1.3"
+  }
+}
