@@ -78,7 +78,7 @@
     "rimraf": "3.0.0",
     "typescript": "3.7.2",
     "which": "2.0.1",
-    "yargs-parser": "16.1.0"
+    "yargs-parser": "18.1.2"
   },
   "devDependencies": {
     "@babel/node": "7.7.0",
