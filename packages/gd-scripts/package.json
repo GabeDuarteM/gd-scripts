@@ -27,11 +27,9 @@
     "src",
     "babel.js",
     "eslint.js",
-    "eslint.web.js",
     "prettier.js",
     "semver.js",
-    "typescript.json",
-    "typescript.web.json"
+    "typescript.json"
   ],
   "repository": {
     "type": "git",
