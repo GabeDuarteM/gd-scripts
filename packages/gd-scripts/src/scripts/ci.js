@@ -16,7 +16,7 @@ const unnecessaryArgumentsCount = 2
 const args = process.argv.slice(unnecessaryArgumentsCount)
 
 const gdScripts = isGdScripts()
-const executor = gdScripts ? 'babel-node' : 'gd-scripts'
+const executor = gdScripts ? 'node' : 'gd-scripts'
 const getArgsSpawn = (script) =>
   gdScripts ? ['src', script, ...args] : [script, ...args]
 const isTypescript = hasFile('tsconfig.json')

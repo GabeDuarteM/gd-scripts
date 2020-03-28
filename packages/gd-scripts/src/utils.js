@@ -18,7 +18,7 @@ const { packageJson: pkg, path: pkgPath } = readPkgUp.sync({
 
 const appDirectory = path.dirname(pkgPath)
 
-const isGdScripts = () => {}
+const isGdScripts = () => pkg.name === 'gd-scripts'
 
 /**
  * @param {string} modName
