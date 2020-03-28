@@ -28,7 +28,7 @@
     "babel.js",
     "eslint.js",
     "prettier.js",
-    "semver.js",
+    "release.config.js",
     "typescript.json"
   ],
   "repository": {
