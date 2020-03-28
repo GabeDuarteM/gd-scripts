@@ -6,14 +6,12 @@
   "license": "MIT",
   "description": "CLI with common scripts for my projects",
   "scripts": {
-    "scripts": "babel-node src",
-    "start": "babel-node src start",
-    "build": "babel-node src build",
-    "lint": "babel-node src lint",
-    "pretest": "yarn build && yalc publish",
-    "test": "babel-node fixtures",
-    "typecheck": "babel-node src typecheck",
-    "ci": "babel-node src ci && yarn test"
+    "scripts": "node src",
+    "start": "node src start",
+    "build": "node src build",
+    "lint": "node src lint",
+    "typecheck": "node src typecheck",
+    "ci": "node src ci"
   },
   "keywords": [
     "gd-scripts",
