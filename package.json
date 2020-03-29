@@ -3,8 +3,8 @@
   "author": "Gabriel Duarte (https://gabrielduarte.dev)",
   "private": true,
   "scripts": {
-    "test": "ls ./fixtures | xargs -I {} bash -c \"cd ./fixtures/'{}' && yarn run ci\"",
-    "ci": "yarn run test",
+    "lint": "node ./packages/gd-scripts/src lint",
+    "ci": "yarn run lint && lerna run ci",
     "prerelease": "lerna run build",
     "release": "lerna exec --concurrency 1 -- npx --no-install semantic-release -e semantic-release-monorepo"
   },
