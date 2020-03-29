@@ -8,7 +8,6 @@
   "scripts": {
     "scripts": "node src",
     "start": "node src start",
-    "build": "node src build",
     "lint": "node src lint",
     "typecheck": "node src typecheck",
     "ci": "node src ci"
