@@ -672,7 +672,7 @@
     "@babel/helper-plugin-utils" "^7.8.3"
     "@babel/plugin-syntax-jsx" "^7.8.3"
 
-"@babel/plugin-transform-react-jsx@^7.9.4":
+"@babel/plugin-transform-react-jsx@^7.9.1", "@babel/plugin-transform-react-jsx@^7.9.4":
   version "7.9.4"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-jsx/-/plugin-transform-react-jsx-7.9.4.tgz#86f576c8540bd06d0e95e0b61ea76d55f6cbd03f"
   integrity sha512-Mjqf3pZBNLt854CK0C/kRuXAnE6H/bo7xYojP+WGtX8glDGSibcwnsWwhwoSuRg0+EBnxPC1ouVnuetUIlPSAw==
@@ -826,6 +826,18 @@
     "@babel/plugin-transform-dotall-regex" "^7.4.4"
     "@babel/types" "^7.4.4"
     esutils "^2.0.2"
+
+"@babel/preset-react@7.9.1":
+  version "7.9.1"
+  resolved "https://registry.yarnpkg.com/@babel/preset-react/-/preset-react-7.9.1.tgz#b346403c36d58c3bb544148272a0cefd9c28677a"
+  integrity sha512-aJBYF23MPj0RNdp/4bHnAP0NVqqZRr9kl0NAOP4nJCex6OYVio59+dnQzsAWFuogdLyeaKA1hmfUIVZkY5J+TQ==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.8.3"
+    "@babel/plugin-transform-react-display-name" "^7.8.3"
+    "@babel/plugin-transform-react-jsx" "^7.9.1"
+    "@babel/plugin-transform-react-jsx-development" "^7.9.0"
+    "@babel/plugin-transform-react-jsx-self" "^7.9.0"
+    "@babel/plugin-transform-react-jsx-source" "^7.9.0"
 
 "@babel/preset-react@7.9.4":
   version "7.9.4"
@@ -981,6 +993,61 @@
     tar "^4.4.10"
     unique-filename "^1.1.1"
     which "^1.3.1"
+
+"@gabrielduartem/babel-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@gabrielduartem/babel-config/-/babel-config-1.0.0.tgz#454c2e75acc41369b94cb4f47f0b9c979f9c73ed"
+  integrity sha512-UTObAvTuEqqQZi+opEnjMnpl8kmYyWEQzC0zudZ2j2sDZAX3e1Bbgrw+2Lb7XEwJqGXDas2ScWvYWkG4zSfORA==
+  dependencies:
+    "@babel/cli" "7.8.4"
+    "@babel/core" "7.9.0"
+    "@babel/plugin-proposal-class-properties" "7.8.3"
+    "@babel/plugin-proposal-object-rest-spread" "7.9.0"
+    "@babel/plugin-transform-modules-commonjs" "7.9.0"
+    "@babel/preset-env" "7.9.0"
+    "@babel/preset-react" "7.9.1"
+    "@babel/preset-typescript" "7.9.0"
+    babel-plugin-macros "2.8.0"
+    babel-plugin-minify-dead-code-elimination "0.5.1"
+    read-pkg-up "^7.0.1"
+    semver "^7.1.3"
+
+"@gabrielduartem/eslint-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@gabrielduartem/eslint-config/-/eslint-config-1.0.0.tgz#4400430108099d140b8f1096c261e41ac9748993"
+  integrity sha512-1bDZqI2dOqRcEOxAPUusk5ujpFQUGdAH6XbNBQRUBRo6E6FhteKBG8sJU6CPvOIHNTDiosAEmONDGop39omPOA==
+  dependencies:
+    "@typescript-eslint/eslint-plugin" "^2.24.0"
+    "@typescript-eslint/parser" "^2.24.0"
+    babel-eslint "^10.1.0"
+    eslint "^6.8.0"
+    eslint-config-prettier "^6.10.0"
+    eslint-plugin-babel "^5.3.0"
+    eslint-plugin-import "^2.20.1"
+    eslint-plugin-jsx-a11y "^6.2.3"
+    eslint-plugin-prettier "^3.1.2"
+    eslint-plugin-react "^7.19.0"
+    prettier "^2.0.1"
+
+"@gabrielduartem/jest-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@gabrielduartem/jest-config/-/jest-config-1.0.0.tgz#b1f7a50a33e71f7a7aa0325d360cbbdd2ffa1901"
+  integrity sha512-6zhUjfAwqQA4bdRZ1qz6wvNiGB1wBKG/EAq/KfwvJKdwhvUDviYLWhKOLZqFTo4XbsMYFT6Hv92U/Ly3v0PsXQ==
+  dependencies:
+    babel-jest "25.1.0"
+    jest "25.1.0"
+
+"@gabrielduartem/semantic-release-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@gabrielduartem/semantic-release-config/-/semantic-release-config-1.0.0.tgz#6f9a19663c9f7179af2673062151fd196e6ecc27"
+  integrity sha512-Gn72VpQMZY+cSQ6NL4n/H1BQbzeVadj3Xi1ZWZn575eOhsuLOd5vF2+QzddgG8C9f3LRRkLfGAk7AhhaSC4qow==
+
+"@gabrielduartem/typescript-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@gabrielduartem/typescript-config/-/typescript-config-1.0.0.tgz#8ac3df04a5d7bc51d197a50551fcabc49399780b"
+  integrity sha512-vpsbHgg5jJoxZWE9anCpdKDChv8I7nO1tfamSVQG5rd5CojBKaFPL3u4akYvH0BYlh6Zo+y0YTqohwi4dUGrzg==
+  dependencies:
+    typescript "^3.8.3"
 
 "@iarna/cli@^1.2.0":
   version "1.2.0"
@@ -2733,7 +2800,7 @@ babel-jest@25.1.0:
     chalk "^3.0.0"
     slash "^3.0.0"
 
-babel-jest@^25.2.3:
+babel-jest@25.2.3, babel-jest@^25.2.3:
   version "25.2.3"
   resolved "https://registry.yarnpkg.com/babel-jest/-/babel-jest-25.2.3.tgz#8f1c088b1954963e8a5384be2e219dae00d053f4"
   integrity sha512-03JjvEwuDrEz/A45K8oggAv+Vqay0xcOdNTJxYFxiuZvB5vlHKo1iZg9Pi5vQTHhNCKpGLb7L/jvUUafyh9j7g==
@@ -5780,7 +5847,7 @@ jest-changed-files@^25.2.3:
     execa "^3.2.0"
     throat "^5.0.0"
 
-jest-cli@^25.1.0:
+jest-cli@^25.1.0, jest-cli@^25.2.3:
   version "25.2.3"
   resolved "https://registry.yarnpkg.com/jest-cli/-/jest-cli-25.2.3.tgz#47e17240ce6d8ce824ca1a01468ea8824ec6b139"
   integrity sha512-T7G0TOkFj0wr33ki5xoq3bxkKC+liwJfjV9SmYIKBozwh91W4YjL1o1dgVCUTB1+sKJa/DiAY0p+eXYE6v2RGw==
@@ -6123,6 +6190,15 @@ jest@25.1.0:
     "@jest/core" "^25.1.0"
     import-local "^3.0.2"
     jest-cli "^25.1.0"
+
+jest@25.2.3:
+  version "25.2.3"
+  resolved "https://registry.yarnpkg.com/jest/-/jest-25.2.3.tgz#0cc9b35192f236fe1d5e76ed8eb3a54e7e0ee2e0"
+  integrity sha512-UbUmyGeZt0/sCIj/zsWOY0qFfQsx2qEFIZp0iEj8yVH6qASfR22fJOf12gFuSPsdSufam+llZBB0MdXWCg6EEQ==
+  dependencies:
+    "@jest/core" "^25.2.3"
+    import-local "^3.0.2"
+    jest-cli "^25.2.3"
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
