@@ -13,7 +13,7 @@
     "typecheck": "gd-scripts typecheck"
   },
   "devDependencies": {
-    "@types/node": "13.9.2",
+    "@types/node": "13.9.5",
     "gd-scripts": "5.0.9"
   }
 }
