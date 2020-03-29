@@ -5,6 +5,7 @@
   "scripts": {
     "test": "ls ./fixtures | xargs -I {} bash -c \"cd ./fixtures/'{}' && yarn run ci\"",
     "ci": "yarn run test",
+    "prerelease": "lerna run build",
     "release": "lerna exec --concurrency 1 -- npx --no-install semantic-release -e semantic-release-monorepo"
   },
   "workspaces": [
