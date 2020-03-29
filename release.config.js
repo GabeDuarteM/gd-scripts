@@ -14,6 +14,12 @@ module.exports = {
           'chore(release): ${nextRelease.gitTag} [skip ci]\n\n${nextRelease.notes}',
       },
     ],
-    '@semantic-release/github',
+    [
+      '@semantic-release/github',
+      {
+        successComment: false,
+        failComment: false,
+      },
+    ],
   ],
 }
