@@ -6,5 +6,8 @@
   "dependencies": {
     "babel-jest": "25.1.0",
     "jest": "25.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
