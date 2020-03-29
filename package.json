@@ -11,7 +11,8 @@
     "fixtures/*"
   ],
   "devDependencies": {
-    "@gabrielduartem/eslint-config": "0.0.0-development",
+    "@gabrielduartem/eslint-config": "1.0.0",
+    "@gabrielduartem/semantic-release-config": "1.0.0",
     "lerna": "3.20.2",
     "prettier": "2.0.1"
   }
