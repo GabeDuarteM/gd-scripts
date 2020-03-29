@@ -13,6 +13,6 @@
   },
   "devDependencies": {
     "@types/node": "13.9.2",
-    "gd-scripts": "0.0.0-development"
+    "gd-scripts": "5.0.9"
   }
 }
