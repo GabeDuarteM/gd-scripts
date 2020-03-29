@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "node ./packages/gd-scripts/src lint",
     "ci": "yarn run lint && lerna run ci",
-    "prerelease": "lerna run build",
+    "prerelease": "lerna run build --no-private",
     "release": "lerna exec --no-private --concurrency 1 -- npx --no-install semantic-release -e semantic-release-monorepo"
   },
   "workspaces": [
