@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "test": "ls ./fixtures | xargs -I {} bash -c \"cd ./fixtures/'{}' && yarn run ci\"",
-    "ci": "yarn run test"
+    "ci": "yarn run test",
+    "release": "lerna exec --concurrency 1 -- npx --no-install semantic-release -e semantic-release-monorepo"
   },
   "workspaces": [
     "packages/*",
@@ -13,7 +14,10 @@
   "devDependencies": {
     "@gabrielduartem/eslint-config": "1.0.0",
     "@gabrielduartem/semantic-release-config": "1.0.0",
+    "@semantic-release/git": "^9.0.0",
     "lerna": "3.20.2",
-    "prettier": "2.0.1"
+    "prettier": "2.0.1",
+    "semantic-release": "^17.0.4",
+    "semantic-release-monorepo": "^7.0.1"
   }
 }
