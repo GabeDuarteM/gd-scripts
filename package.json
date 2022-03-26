@@ -15,7 +15,7 @@
   "devDependencies": {
     "@gabrielduartem/eslint-config": "1.0.0",
     "@gabrielduartem/semantic-release-config": "1.0.0",
-    "@semantic-release/git": "9.0.0",
+    "@semantic-release/git": "10.0.1",
     "eslint-plugin-prettier": "3.1.2",
     "lerna": "3.20.2",
     "prettier": "2.0.2",
